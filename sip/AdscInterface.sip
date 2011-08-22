@@ -93,15 +93,15 @@ class AdscBinCtrlObj : HwBinCtrlObj
 };
 
 
-class AdscInterface : HwInterface
+class AdscHwInterface : HwInterface
 {
 %TypeHeaderCode
 #include "AdscInterface.h"
 %End
 
  public:
-	AdscInterface(AdscCamera& adsc);
-	virtual ~AdscInterface();
+	AdscHwInterface(AdscCamera& adsc);
+	virtual ~AdscHwInterface();
 
 //	virtual const CapList& getCapList() const;
 	virtual void getCapList(std::vector<HwCap> &cap_list /Out/) const;
