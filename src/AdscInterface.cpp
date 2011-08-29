@@ -204,10 +204,10 @@ void AdscBinCtrlObj::checkBin(Bin& bin)
 
 
 /*******************************************************************
- * \brief AdscHwInterface constructor
+ * \brief AdscInterface constructor
  *******************************************************************/
 
-AdscHwInterface::AdscHwInterface(AdscCamera& adsc)
+AdscInterface::AdscInterface(AdscCamera& adsc)
 	: m_adsc(adsc), m_det_info(adsc),
 	  m_sync(adsc), m_bin(adsc)
 {
@@ -223,35 +223,35 @@ AdscHwInterface::AdscHwInterface(AdscCamera& adsc)
 	m_cap_list.push_back(HwCap(bin));
 }
 
-AdscHwInterface::~AdscHwInterface()
+AdscInterface::~AdscInterface()
 {
 }
 
-void AdscHwInterface::getCapList(HwInterface::CapList &aReturnCapList) const
+void AdscInterface::getCapList(HwInterface::CapList &aReturnCapList) const
 {
   aReturnCapList = m_cap_list;
 }
 
-void AdscHwInterface::reset(ResetLevel reset_level)
+void AdscInterface::reset(ResetLevel reset_level)
 {
 	m_adsc.reset();
 }
 
-void AdscHwInterface::prepareAcq()
+void AdscInterface::prepareAcq()
 {
 }
 
-void AdscHwInterface::startAcq()
+void AdscInterface::startAcq()
 {
 	m_adsc.startAcq();
 }
 
-void AdscHwInterface::stopAcq()
+void AdscInterface::stopAcq()
 {
 	m_adsc.stopAcq();
 }
 
-void AdscHwInterface::getStatus(StatusType& status)
+void AdscInterface::getStatus(StatusType& status)
 {
 	AdscCamera::Status adsc_status = m_adsc.getStatus();
 	switch (adsc_status) {
@@ -274,7 +274,7 @@ void AdscHwInterface::getStatus(StatusType& status)
 	status.det_mask = DetExposure | DetReadout | DetLatency;
 }
 
-int AdscHwInterface::getNbHwAcquiredFrames()
+int AdscInterface::getNbHwAcquiredFrames()
 {
 	return m_adsc.getNbAcquiredFrames();
 }

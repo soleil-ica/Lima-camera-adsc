@@ -19,14 +19,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //###########################################################################
-/***************************************************************//**
- * @file AdscApi.h
- * @brief This file contains the AdscApi class for the Simulator
- *
- * @author A.Kirov
- * @date 03/06/2009
- *******************************************************************/
-
 #ifndef ADSC_API_H
 #define ADSC_API_H
 
@@ -35,7 +27,8 @@
 #include "SizeUtils.h"
 #include "Exceptions.h"
 
-namespace lima {
+namespace lima
+{
 
 
 /***************************************************************//**
@@ -44,8 +37,8 @@ namespace lima {
  * @brief This class configures and generates frames for the Simulator
  *
  *******************************************************************/
-class LIBADSC_API AdscApi {
-
+class LIBADSC_API AdscApi
+{
   public:
 	AdscApi();
 	AdscApi( FrameDim &frame_dim, Bin &bin);

@@ -8,17 +8,52 @@
     </parent>
 
     <groupId>fr.soleil.lib.Lima.Camera</groupId>
-    <artifactId>LimaSimulator-${aol}-shared-${mode}</artifactId>
+    <artifactId>LimaAdsc-${aol}-shared-${mode}</artifactId>
 
     <packaging>nar</packaging>
-    <name>LimaSimulator</name>    <!-- use for the name of executable -->
-    <description>This module controls the Simulator Camera</description>
+
+    <name>LimaAdsc</name>    <!-- use for the name of executable -->
+    <description>This module controls the Adsc Camera</description>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.freehep</groupId>
                 <artifactId>freehep-nar-plugin</artifactId>
+                <configuration>
+		    <cpp>
+                        <systemIncludePaths>
+                            	<systemIncludePath>./sdk/adsc_sources/src_std/incl</systemIncludePath>
+				<systemIncludePath>./sdk/adsc_sources/src_std/detcon_lib_th</systemIncludePath>
+				<systemIncludePath>./sdk/adsc_sources/src_std/auxlib</systemIncludePath>
+                        </systemIncludePaths>
+                        
+                        <!-- define less verbose mode for gcc-->
+                        <options>
+                            <option>-w</option>
+                        </options>
+                    </cpp>
+                    <linker>
+                        <libs>
+                            <lib>
+                                <name>auxlib</name>
+                                <type>shared</type>
+                                <directory>./sdk/adsc_sources/lib/linux</directory>
+                            </lib>
+			<lib>
+                                <name>detcon_th</name>
+                                <type>shared</type>
+                                <directory>./sdk/adsc_sources/lib/linux</directory>
+                            </lib>
+                        </libs>
+                    </linker>
+                    <cpp>
+                        <!-- define less verbose mode for gcc-->
+                        <options>
+                            <option>-w</option>
+                        </options>
+                    </cpp>
+                </configuration>
             </plugin>
         </plugins>
     </build>

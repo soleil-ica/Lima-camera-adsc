@@ -20,9 +20,6 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //###########################################################################
 #include "AdscCamera.h"
-#include "DetconFcns.h"
-#include "DetconPar.h"
-#include "DetconState.h"
 
 #include <string>
 #include <unistd.h>

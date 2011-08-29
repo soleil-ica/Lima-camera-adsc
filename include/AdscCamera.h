@@ -28,6 +28,10 @@
 #include "SizeUtils.h"
 #include "Debug.h"
 
+#include "DetconFcns.h"
+#include "DetconPar.h"
+#include "DetconState.h"
+
 #include <ostream>
 
 namespace lima
@@ -103,6 +107,8 @@ class LIBADSC_API AdscCamera
 		AdscCamera* m_adsc;
 		int m_acq_frame_nb;
 	};
+
+
 	friend class AdscThread;
 
 	void init();

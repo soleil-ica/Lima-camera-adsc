@@ -29,7 +29,6 @@
 namespace lima
 {
 
-
 /*******************************************************************
  * \class AdscDetInfoCtrlObj
  * \brief Control object providing simulator detector info interface
@@ -120,15 +119,15 @@ class LIBADSC_API AdscBinCtrlObj : public HwBinCtrlObj
 
 
 /*******************************************************************
- * \class AdscHwInterface
- * \brief Adsc hardware interface
+ * \class AdscInterface
+ * \brief Adsc interface
  *******************************************************************/
 
-class LIBADSC_API AdscHwInterface : public HwInterface
+class LIBADSC_API AdscInterface : public HwInterface
 {
  public:
-	AdscHwInterface(AdscCamera& adsc);
-	virtual ~AdscHwInterface();
+	AdscInterface(AdscCamera& adsc);
+	virtual ~AdscInterface();
 
 	virtual void getCapList(CapList&) const;
 
