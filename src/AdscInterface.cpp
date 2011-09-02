@@ -21,14 +21,10 @@
 //###########################################################################
 #include "AdscInterface.h"
 
-using namespace lima;
-using namespace std;
-
 /*******************************************************************
  * \brief AdscDetInfoCtrlObj constructor
  *******************************************************************/
-
-AdscDetInfoCtrlObj::AdscDetInfoCtrlObj(AdscCamera& adsc)
+AdscDetInfoCtrlObj::AdscDetInfoCtrlObj(Camera& adsc)
 	: m_adsc(adsc)
 {
 }
@@ -108,7 +104,7 @@ void AdscDetInfoCtrlObj::
  * \brief AdscSyncCtrlObj constructor
  *******************************************************************/
 
-AdscSyncCtrlObj::AdscSyncCtrlObj(AdscCamera& adsc)
+AdscSyncCtrlObj::AdscSyncCtrlObj(Camera& adsc)
 	: HwSyncCtrlObj(), m_adsc(adsc)
 {
 }
@@ -178,7 +174,7 @@ void AdscSyncCtrlObj::getValidRanges(ValidRangesType& valid_ranges)
  * \brief AdscBinCtrlObj constructor
  *******************************************************************/
 
-AdscBinCtrlObj::AdscBinCtrlObj(AdscCamera& adsc)
+AdscBinCtrlObj::AdscBinCtrlObj(Camera& adsc)
 	: m_adsc(adsc)
 {
 }
@@ -204,10 +200,9 @@ void AdscBinCtrlObj::checkBin(Bin& bin)
 
 
 /*******************************************************************
- * \brief AdscInterface constructor
+ * \brief Interface constructor
  *******************************************************************/
-
-AdscInterface::AdscInterface(AdscCamera& adsc)
+Interface::Interface(Camera& adsc)
 	: m_adsc(adsc), m_det_info(adsc),
 	  m_sync(adsc), m_bin(adsc)
 {
@@ -223,49 +218,49 @@ AdscInterface::AdscInterface(AdscCamera& adsc)
 	m_cap_list.push_back(HwCap(bin));
 }
 
-AdscInterface::~AdscInterface()
+Interface::~Interface()
 {
 }
 
-void AdscInterface::getCapList(HwInterface::CapList &aReturnCapList) const
+void Interface::getCapList(HwInterface::CapList &aReturnCapList) const
 {
   aReturnCapList = m_cap_list;
 }
 
-void AdscInterface::reset(ResetLevel reset_level)
+void Interface::reset(ResetLevel reset_level)
 {
 	m_adsc.reset();
 }
 
-void AdscInterface::prepareAcq()
+void Interface::prepareAcq()
 {
 }
 
-void AdscInterface::startAcq()
+void Interface::startAcq()
 {
 	m_adsc.startAcq();
 }
 
-void AdscInterface::stopAcq()
+void Interface::stopAcq()
 {
 	m_adsc.stopAcq();
 }
 
-void AdscInterface::getStatus(StatusType& status)
+void Interface::getStatus(StatusType& status)
 {
-	AdscCamera::Status adsc_status = m_adsc.getStatus();
+	Camera::Status adsc_status = m_adsc.getStatus();
 	switch (adsc_status) {
-	case AdscCamera::Ready:
+	case Camera::Ready:
 		status.acq = AcqReady;
 		status.det = DetIdle;
 		break;
-	case AdscCamera::Exposure:
+	case Camera::Exposure:
 		status.det = DetExposure;
 		goto Running;
-	case AdscCamera::Readout:
+	case Camera::Readout:
 		status.det = DetReadout;
 		goto Running;
-	case AdscCamera::Latency:
+	case Camera::Latency:
 		status.det = DetLatency;
 	Running:
 		status.acq = AcqRunning;
@@ -274,7 +269,7 @@ void AdscInterface::getStatus(StatusType& status)
 	status.det_mask = DetExposure | DetReadout | DetLatency;
 }
 
-int AdscInterface::getNbHwAcquiredFrames()
+int Interface::getNbHwAcquiredFrames()
 {
 	return m_adsc.getNbAcquiredFrames();
 }

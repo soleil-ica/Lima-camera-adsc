@@ -36,17 +36,19 @@
 
 namespace lima
 {
-
-class LIBADSC_API AdscCamera
+namespace Adsc
 {
-	DEB_CLASS_NAMESPC(DebModCamera, "AdscCamera", "Adsc");
+
+class  Camera
+{
+	DEB_CLASS_NAMESPC(DebModCamera, "Camera", "Adsc");
  public:
 	enum Status {
 		Ready, Exposure, Readout, Latency,
 	};
 
-	AdscCamera();
-	~AdscCamera();
+	Camera();
+	~Camera();
 
 	HwBufferCtrlObj* getBufferMgr();
 	
@@ -92,7 +94,7 @@ class LIBADSC_API AdscCamera
 			StartAcq = MaxThreadCmd, StopAcq,
 		};
 		
-		AdscThread(AdscCamera& adsc);
+		AdscThread(Camera& adsc);
 
 		virtual void start();
 		
@@ -104,7 +106,7 @@ class LIBADSC_API AdscCamera
 		virtual void execCmd(int cmd);
 	private:
 		void execStartAcq();
-		AdscCamera* m_adsc;
+		Camera* m_adsc;
 		int m_acq_frame_nb;
 	};
 
@@ -132,8 +134,9 @@ class LIBADSC_API AdscCamera
 	AdscThread m_thread;
 };
 
-LIBADSC_API std::ostream& operator <<(std::ostream& os, AdscCamera& adsc);
+ std::ostream& operator <<(std::ostream& os, Camera& adsc);
 
+} // namespace Adsc
 } // namespace lima
 
 #endif // ADSCCAMERA_H

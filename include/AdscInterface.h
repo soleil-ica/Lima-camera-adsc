@@ -26,18 +26,23 @@
 #include "HwInterface.h"
 #include "AdscCamera.h"
 
+using namespace lima;
+using namespace lima::Adsc;
+using namespace std;
+
 namespace lima
+{
+namespace Adsc
 {
 
 /*******************************************************************
  * \class AdscDetInfoCtrlObj
  * \brief Control object providing simulator detector info interface
  *******************************************************************/
-
-class LIBADSC_API AdscDetInfoCtrlObj : public HwDetInfoCtrlObj
+class  AdscDetInfoCtrlObj : public HwDetInfoCtrlObj
 {
  public:
-	AdscDetInfoCtrlObj(AdscCamera& adsc);
+	AdscDetInfoCtrlObj(Camera& adsc);
 	virtual ~AdscDetInfoCtrlObj();
 
 	virtual void getMaxImageSize(Size& max_image_size);
@@ -63,7 +68,7 @@ class LIBADSC_API AdscDetInfoCtrlObj : public HwDetInfoCtrlObj
 		virtual void setMaxImageSizeCallbackActive(bool cb_active);
 	};
 
-	AdscCamera& m_adsc;
+	Camera& m_adsc;
 	MaxImageSizeCallbackGen m_mis_cb_gen;
 };
 
@@ -71,11 +76,10 @@ class LIBADSC_API AdscDetInfoCtrlObj : public HwDetInfoCtrlObj
  * \class AdscSyncCtrlObj
  * \brief Control object providing simulator synchronization interface
  *******************************************************************/
-
-class LIBADSC_API AdscSyncCtrlObj : public HwSyncCtrlObj
+class  AdscSyncCtrlObj : public HwSyncCtrlObj
 {
  public:
-	AdscSyncCtrlObj(AdscCamera& adsc);
+	AdscSyncCtrlObj(Camera& adsc);
 	virtual ~AdscSyncCtrlObj();
 
 	virtual bool checkTrigMode(TrigMode trig_mode);
@@ -94,7 +98,7 @@ class LIBADSC_API AdscSyncCtrlObj : public HwSyncCtrlObj
 	virtual void getValidRanges(ValidRangesType& valid_ranges);
 
  private:
-	AdscCamera& m_adsc;
+	Camera& m_adsc;
 };
 
 
@@ -102,11 +106,10 @@ class LIBADSC_API AdscSyncCtrlObj : public HwSyncCtrlObj
  * \class adscBinCtrlObj
  * \brief Control object providing simulator binning interface
  *******************************************************************/
-
-class LIBADSC_API AdscBinCtrlObj : public HwBinCtrlObj
+class  AdscBinCtrlObj : public HwBinCtrlObj
 {
  public:
-	AdscBinCtrlObj(AdscCamera& adsc);
+	AdscBinCtrlObj(Camera& adsc);
 	virtual ~AdscBinCtrlObj();
 
 	virtual void setBin(const Bin& bin);
@@ -114,20 +117,19 @@ class LIBADSC_API AdscBinCtrlObj : public HwBinCtrlObj
 	virtual void checkBin(Bin& bin);
 
  private:
-	AdscCamera& m_adsc;
+	Camera& m_adsc;
 };
 
 
 /*******************************************************************
- * \class AdscInterface
+ * \class Interface
  * \brief Adsc interface
  *******************************************************************/
-
-class LIBADSC_API AdscInterface : public HwInterface
+class  Interface : public HwInterface
 {
  public:
-	AdscInterface(AdscCamera& adsc);
-	virtual ~AdscInterface();
+	Interface(Camera& adsc);
+	virtual ~Interface();
 
 	virtual void getCapList(CapList&) const;
 
@@ -139,13 +141,14 @@ class LIBADSC_API AdscInterface : public HwInterface
 	virtual int getNbHwAcquiredFrames();
 
  private:
-	AdscCamera& m_adsc;
+	Camera& m_adsc;
 	CapList m_cap_list;
 	AdscDetInfoCtrlObj m_det_info;
 	AdscSyncCtrlObj    m_sync;
 	AdscBinCtrlObj     m_bin;
 };
 
-}
+} // namespace Adsc
+} // namespace lima
 
 #endif // ADSCINTERFACE_H

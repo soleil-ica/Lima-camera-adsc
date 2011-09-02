@@ -26,27 +26,39 @@
 #include <cmath>
 
 using namespace lima;
-using namespace std;
+using namespace lima::Adsc;
 
-AdscCamera::AdscThread::AdscThread(AdscCamera& adsc)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+Camera::AdscThread::AdscThread(Camera& adsc)
 	: m_adsc(&adsc)
 {	
 	m_acq_frame_nb = 0;
 	m_force_stop = false;
 }
 
-void AdscCamera::AdscThread::start()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::AdscThread::start()
 {
 	CmdThread::start();
 	waitStatus(Ready);
 }
 
-void AdscCamera::AdscThread::init()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::AdscThread::init()
 {
 	setStatus(Ready);
 }
 
-void AdscCamera::AdscThread::execCmd(int cmd)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::AdscThread::execCmd(int cmd)
 {
 	int status = getStatus();
 	switch (cmd) {
@@ -58,7 +70,10 @@ void AdscCamera::AdscThread::execCmd(int cmd)
 	}
 }
 
-void AdscCamera::AdscThread::execStartAcq()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::AdscThread::execStartAcq()
 {
 	DEB_MEMBER_FUNCT();
 	
@@ -102,13 +117,19 @@ void AdscCamera::AdscThread::execStartAcq()
 	setStatus(Ready);
 }
 
-int AdscCamera::AdscThread::getNbAcquiredFrames()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+int Camera::AdscThread::getNbAcquiredFrames()
 {
 	DEB_MEMBER_FUNCT();
 	return m_acq_frame_nb;
 }
 
-AdscCamera::AdscCamera() : 
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+Camera::Camera() : 
   m_thread(*this)
 {
 	DEB_CONSTRUCTOR();
@@ -118,7 +139,10 @@ AdscCamera::AdscCamera() :
 	m_thread.start();
 }
 
-void AdscCamera::init()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::init()
 {
 	DEB_MEMBER_FUNCT();
 	m_exp_time = 1.0;
@@ -137,24 +161,36 @@ void AdscCamera::init()
 
 }
 
-AdscCamera::~AdscCamera()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+Camera::~Camera()
 {
 	DEB_DESTRUCTOR();
 }
 
-HwBufferCtrlObj* AdscCamera::getBufferMgr()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+HwBufferCtrlObj* Camera::getBufferMgr()
 {
 	DEB_MEMBER_FUNCT();
 	return &m_buffer_ctrl_mgr;
 }
 
-void AdscCamera::getMaxImageSize(Size& max_image_size)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::getMaxImageSize(Size& max_image_size)
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc_api.getMaxImageSize(max_image_size);
 }
 
-void AdscCamera::setNbFrames(int nb_frames)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setNbFrames(int nb_frames)
 {
 	DEB_MEMBER_FUNCT();
 	if (nb_frames < 0)
@@ -163,13 +199,19 @@ void AdscCamera::setNbFrames(int nb_frames)
 	m_nb_frames = nb_frames;
 }
 
-void AdscCamera::getNbFrames(int& nb_frames)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::getNbFrames(int& nb_frames)
 {
 	DEB_MEMBER_FUNCT();
 	nb_frames = m_nb_frames;
 }
 
-void AdscCamera::setExpTime(double exp_time)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setExpTime(double exp_time)
 {
 	DEB_MEMBER_FUNCT();
 	if (exp_time <= 0)
@@ -178,13 +220,19 @@ void AdscCamera::setExpTime(double exp_time)
 	m_exp_time = exp_time;
 }
 
-void AdscCamera::getExpTime(double& exp_time)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::getExpTime(double& exp_time)
 {
 	DEB_MEMBER_FUNCT();
 	exp_time = m_exp_time;
 }
 
-void AdscCamera::setLatTime(double lat_time)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setLatTime(double lat_time)
 {
 	DEB_MEMBER_FUNCT();
 	if (lat_time < 0)
@@ -193,43 +241,64 @@ void AdscCamera::setLatTime(double lat_time)
 	m_lat_time = lat_time;
 }
 
-void AdscCamera::getLatTime(double& lat_time)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::getLatTime(double& lat_time)
 {
 	DEB_MEMBER_FUNCT();
 	lat_time = m_lat_time;
 }
 
-void AdscCamera::setBin(const Bin& bin)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setBin(const Bin& bin)
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc_api.setBin(bin);
 }
 
-void AdscCamera::getBin(Bin& bin)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::getBin(Bin& bin)
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc_api.getBin(bin);
 }
 
-void AdscCamera::checkBin(Bin& bin)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::checkBin(Bin& bin)
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc_api.checkBin(bin);
 }
 
-void AdscCamera::setFrameDim(const FrameDim& frame_dim)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setFrameDim(const FrameDim& frame_dim)
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc_api.setFrameDim(frame_dim);
 }
 
-void AdscCamera::getFrameDim(FrameDim& frame_dim)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::getFrameDim(FrameDim& frame_dim)
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc_api.getFrameDim(frame_dim);
 }
 
-void AdscCamera::reset()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::reset()
 {
 	DEB_MEMBER_FUNCT();
 	stopAcq();
@@ -237,43 +306,58 @@ void AdscCamera::reset()
 	init();
 }
 
-void AdscCamera::setImageKind(int image_kind)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setImageKind(int image_kind)
 {
 	DEB_MEMBER_FUNCT();
 	m_flp_kind = image_kind;
 }
 
-void AdscCamera::setFilename(std::string filename)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setFilename(std::string filename)
 {
 	DEB_MEMBER_FUNCT();
 	m_filename = filename;
 }
 
-void AdscCamera::setLastImage(int last_image)
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setLastImage(int last_image)
 {
 	DEB_MEMBER_FUNCT();
 	m_last_image = last_image;
 }
 
-AdscCamera::Status AdscCamera::getStatus()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+Camera::Status Camera::getStatus()
 {
 	DEB_MEMBER_FUNCT();
 	int thread_status = m_thread.getStatus();
 	switch (thread_status) {
 	case AdscThread::Ready:
-		return AdscCamera::Ready;
+		return Camera::Ready;
 	case AdscThread::Exposure:
-		return AdscCamera::Exposure;
+		return Camera::Exposure;
 	case AdscThread::Readout:
-		return AdscCamera::Readout;
+		return Camera::Readout;
 	case AdscThread::Latency:
-		return AdscCamera::Latency;
+		return Camera::Latency;
 	default:
 		throw LIMA_HW_EXC(Error, "Invalid thread status");
 	}
 }
 
-void AdscCamera::startAcq()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::startAcq()
 {
 
 	DEB_MEMBER_FUNCT();
@@ -306,8 +390,7 @@ void AdscCamera::startAcq()
 	{
 		if(DTC_STATE_ERROR == CCDState())
 		{
-			fprintf(stdout,"Error returned from CCDStartExposure()\n");
-			cout << "Error returned from CCDStartExposure()" << endl;
+			DEB_TRACE() << "Error returned from CCDStartExposure()";  
 			return;
 		}
 	}
@@ -316,7 +399,10 @@ void AdscCamera::startAcq()
 	m_thread.waitNotStatus(AdscThread::Ready);
 }
 
-void AdscCamera::stopAcq()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::stopAcq()
 {		
 	DEB_MEMBER_FUNCT();
 	m_thread.m_force_stop = true;		//ugly but works
@@ -331,8 +417,7 @@ void AdscCamera::stopAcq()
 	{
 		if(DTC_STATE_ERROR == CCDState())
 		{
-			fprintf(stdout,"Error returned from CCDStartExposure()\n");
-			cout << "Error returned from CCDStartExposure()" << endl;
+			DEB_TRACE() << "Error returned from CCDStopExposure()";  
 			return;
 		}
 	}
@@ -345,27 +430,12 @@ void AdscCamera::stopAcq()
 	CCDGetImage();
 }
 
-int AdscCamera::getNbAcquiredFrames()
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+int Camera::getNbAcquiredFrames()
 {
 	DEB_MEMBER_FUNCT();
 	return m_thread.getNbAcquiredFrames();
 }
 
-ostream& lima::operator <<(ostream& os, AdscCamera& adsc)
-{
-	string status;
-	switch (adsc.getStatus()) {
-	case AdscCamera::Ready:
-		status = "Ready"; break;
-	case AdscCamera::Exposure:
-		status = "Exposure"; break;
-	case AdscCamera::Readout:
-		status = "Readout"; break;
-	case AdscCamera::Latency:
-		status = "Latency"; break;
-	default:
-		status = "Unknown";
-	}
-	os << "<status=" << status << ">";
-	return os;
-}

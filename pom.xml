@@ -24,8 +24,8 @@
 		    <cpp>
                         <systemIncludePaths>
                             	<systemIncludePath>./sdk/adsc_sources/src_std/incl</systemIncludePath>
-				<systemIncludePath>./sdk/adsc_sources/src_std/detcon_lib_th</systemIncludePath>
-				<systemIncludePath>./sdk/adsc_sources/src_std/auxlib</systemIncludePath>
+								<systemIncludePath>./sdk/adsc_sources/src_std/detcon_lib_th</systemIncludePath>
+								<systemIncludePath>./sdk/adsc_sources/src_std/auxlib</systemIncludePath>
                         </systemIncludePaths>
                         
                         <!-- define less verbose mode for gcc-->
