@@ -36,14 +36,14 @@ namespace Adsc
 {
 
 /*******************************************************************
- * \class AdscDetInfoCtrlObj
+ * \class DetInfoCtrlObj
  * \brief Control object providing simulator detector info interface
  *******************************************************************/
-class  AdscDetInfoCtrlObj : public HwDetInfoCtrlObj
+class  DetInfoCtrlObj : public HwDetInfoCtrlObj
 {
  public:
-	AdscDetInfoCtrlObj(Camera& adsc);
-	virtual ~AdscDetInfoCtrlObj();
+	DetInfoCtrlObj(Camera& adsc);
+	virtual ~DetInfoCtrlObj();
 
 	virtual void getMaxImageSize(Size& max_image_size);
 	virtual void getDetectorImageSize(Size& det_image_size);
@@ -73,14 +73,14 @@ class  AdscDetInfoCtrlObj : public HwDetInfoCtrlObj
 };
 
 /*******************************************************************
- * \class AdscSyncCtrlObj
+ * \class SyncCtrlObj
  * \brief Control object providing simulator synchronization interface
  *******************************************************************/
-class  AdscSyncCtrlObj : public HwSyncCtrlObj
+class  SyncCtrlObj : public HwSyncCtrlObj
 {
  public:
-	AdscSyncCtrlObj(Camera& adsc);
-	virtual ~AdscSyncCtrlObj();
+	SyncCtrlObj(Camera& adsc);
+	virtual ~SyncCtrlObj();
 
 	virtual bool checkTrigMode(TrigMode trig_mode);
 	virtual void setTrigMode(TrigMode  trig_mode);
@@ -106,11 +106,11 @@ class  AdscSyncCtrlObj : public HwSyncCtrlObj
  * \class adscBinCtrlObj
  * \brief Control object providing simulator binning interface
  *******************************************************************/
-class  AdscBinCtrlObj : public HwBinCtrlObj
+class  BinCtrlObj : public HwBinCtrlObj
 {
  public:
-	AdscBinCtrlObj(Camera& adsc);
-	virtual ~AdscBinCtrlObj();
+	BinCtrlObj(Camera& adsc);
+	virtual ~BinCtrlObj();
 
 	virtual void setBin(const Bin& bin);
 	virtual void getBin(Bin& bin);
@@ -141,11 +141,11 @@ class  Interface : public HwInterface
 	virtual int getNbHwAcquiredFrames();
 
  private:
-	Camera& m_adsc;
-	CapList m_cap_list;
-	AdscDetInfoCtrlObj m_det_info;
-	AdscSyncCtrlObj    m_sync;
-	AdscBinCtrlObj     m_bin;
+	Camera&			m_adsc;
+	CapList			m_cap_list;
+	DetInfoCtrlObj	m_det_info;
+	SyncCtrlObj		m_sync;
+	BinCtrlObj		m_bin;
 };
 
 } // namespace Adsc

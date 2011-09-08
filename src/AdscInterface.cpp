@@ -22,37 +22,37 @@
 #include "AdscInterface.h"
 
 /*******************************************************************
- * \brief AdscDetInfoCtrlObj constructor
+ * \brief DetInfoCtrlObj constructor
  *******************************************************************/
-AdscDetInfoCtrlObj::AdscDetInfoCtrlObj(Camera& adsc)
+DetInfoCtrlObj::DetInfoCtrlObj(Camera& adsc)
 	: m_adsc(adsc)
 {
 }
 
-AdscDetInfoCtrlObj::~AdscDetInfoCtrlObj()
+DetInfoCtrlObj::~DetInfoCtrlObj()
 {
 }
 
-void AdscDetInfoCtrlObj::getMaxImageSize(Size& max_image_size)
+void DetInfoCtrlObj::getMaxImageSize(Size& max_image_size)
 {
 	FrameDim fdim;
 	m_adsc.getFrameDim(fdim);
 	max_image_size = fdim.getSize();
 }
 
-void AdscDetInfoCtrlObj::getDetectorImageSize(Size& det_image_size)
+void DetInfoCtrlObj::getDetectorImageSize(Size& det_image_size)
 {
 	m_adsc.getMaxImageSize(det_image_size);
 }
 
-void AdscDetInfoCtrlObj::getDefImageType(ImageType& def_image_type)
+void DetInfoCtrlObj::getDefImageType(ImageType& def_image_type)
 {
 	FrameDim fdim;
 	m_adsc.getFrameDim(fdim);
 	def_image_type = fdim.getImageType();
 }
 
-void AdscDetInfoCtrlObj::setCurrImageType(ImageType curr_image_type)
+void DetInfoCtrlObj::setCurrImageType(ImageType curr_image_type)
 {
 	FrameDim fdim;
 	m_adsc.getFrameDim(fdim);
@@ -60,106 +60,105 @@ void AdscDetInfoCtrlObj::setCurrImageType(ImageType curr_image_type)
 	m_adsc.setFrameDim(fdim);
 }
 
-void AdscDetInfoCtrlObj::getCurrImageType(ImageType& curr_image_type)
+void DetInfoCtrlObj::getCurrImageType(ImageType& curr_image_type)
 {
 	FrameDim fdim;
 	m_adsc.getFrameDim(fdim);
 	curr_image_type = fdim.getImageType();
 }
 
-void AdscDetInfoCtrlObj::getPixelSize(double& pixel_size)
+void DetInfoCtrlObj::getPixelSize(double& pixel_size)
 {
 	pixel_size = 0.1025880;
 }
 
-void AdscDetInfoCtrlObj::getDetectorType(string& det_type)
+void DetInfoCtrlObj::getDetectorType(string& det_type)
 {
 	det_type = "Adsc";
 }
 
-void AdscDetInfoCtrlObj::getDetectorModel(string& det_model)
+void DetInfoCtrlObj::getDetectorModel(string& det_model)
 {
 	det_model = "Q315r";
 }
 
-void AdscDetInfoCtrlObj::registerMaxImageSizeCallback(
+void DetInfoCtrlObj::registerMaxImageSizeCallback(
 						HwMaxImageSizeCallback& cb)
 {
 	m_mis_cb_gen.registerMaxImageSizeCallback(cb);
 }
 
-void AdscDetInfoCtrlObj::unregisterMaxImageSizeCallback(
+void DetInfoCtrlObj::unregisterMaxImageSizeCallback(
 						HwMaxImageSizeCallback& cb)
 {
 	m_mis_cb_gen.unregisterMaxImageSizeCallback(cb);
 }
 
 
-void AdscDetInfoCtrlObj::
+void DetInfoCtrlObj::
      MaxImageSizeCallbackGen::setMaxImageSizeCallbackActive(bool cb_active)
 {
 }
 
 /*******************************************************************
- * \brief AdscSyncCtrlObj constructor
+ * \brief SyncCtrlObj constructor
  *******************************************************************/
-
-AdscSyncCtrlObj::AdscSyncCtrlObj(Camera& adsc)
+SyncCtrlObj::SyncCtrlObj(Camera& adsc)
 	: HwSyncCtrlObj(), m_adsc(adsc)
 {
 }
 
-AdscSyncCtrlObj::~AdscSyncCtrlObj()
+SyncCtrlObj::~SyncCtrlObj()
 {
 }
 
-bool AdscSyncCtrlObj::checkTrigMode(TrigMode trig_mode)
+bool SyncCtrlObj::checkTrigMode(TrigMode trig_mode)
 {
 	return (trig_mode == ExtTrigSingle);
 }
 
-void AdscSyncCtrlObj::setTrigMode(TrigMode trig_mode)
+void SyncCtrlObj::setTrigMode(TrigMode trig_mode)
 {
 	if (!checkTrigMode(trig_mode))
 		throw LIMA_HW_EXC(InvalidValue, "Invalid (external) trigger");
 }
 
-void AdscSyncCtrlObj::getTrigMode(TrigMode& trig_mode)
+void SyncCtrlObj::getTrigMode(TrigMode& trig_mode)
 {
 	trig_mode = ExtTrigSingle;
 }
 
-void AdscSyncCtrlObj::setExpTime(double exp_time)
+void SyncCtrlObj::setExpTime(double exp_time)
 {
 	m_adsc.setExpTime(exp_time);
 }
 
-void AdscSyncCtrlObj::getExpTime(double& exp_time)
+void SyncCtrlObj::getExpTime(double& exp_time)
 {
 	m_adsc.getExpTime(exp_time);
 }
 
-void AdscSyncCtrlObj::setLatTime(double lat_time)
+void SyncCtrlObj::setLatTime(double lat_time)
 {
 	m_adsc.setLatTime(lat_time);
 }
 
-void AdscSyncCtrlObj::getLatTime(double& lat_time)
+void SyncCtrlObj::getLatTime(double& lat_time)
 {
 	m_adsc.getLatTime(lat_time);
 }
 
-void AdscSyncCtrlObj::setNbHwFrames(int nb_frames)
+void SyncCtrlObj::setNbHwFrames(int nb_frames)
 {
 	m_adsc.setNbFrames(nb_frames);
 }
 
-void AdscSyncCtrlObj::getNbHwFrames(int& nb_frames)
+void SyncCtrlObj::getNbHwFrames(int& nb_frames)
 {
 	m_adsc.getNbFrames(nb_frames);
 }
 
-void AdscSyncCtrlObj::getValidRanges(ValidRangesType& valid_ranges)
+void SyncCtrlObj::getValidRanges(ValidRangesType& valid_ranges)
 {
 	double min_time = 10e-9;
 	double max_time = 1e6;
@@ -171,29 +170,28 @@ void AdscSyncCtrlObj::getValidRanges(ValidRangesType& valid_ranges)
 
 
 /*******************************************************************
- * \brief AdscBinCtrlObj constructor
+ * \brief BinCtrlObj constructor
  *******************************************************************/
-
-AdscBinCtrlObj::AdscBinCtrlObj(Camera& adsc)
+BinCtrlObj::BinCtrlObj(Camera& adsc)
 	: m_adsc(adsc)
 {
 }
 
-AdscBinCtrlObj::~AdscBinCtrlObj()
+BinCtrlObj::~BinCtrlObj()
 {
 }
 
-void AdscBinCtrlObj::setBin(const Bin& bin)
+void BinCtrlObj::setBin(const Bin& bin)
 {
 	m_adsc.setBin(bin);
 }
 
-void AdscBinCtrlObj::getBin(Bin& bin)
+void BinCtrlObj::getBin(Bin& bin)
 {
 	m_adsc.getBin(bin);
 }
 
-void AdscBinCtrlObj::checkBin(Bin& bin)
+void BinCtrlObj::checkBin(Bin& bin)
 {
 	m_adsc.checkBin(bin);
 }
