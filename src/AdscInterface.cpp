@@ -25,7 +25,7 @@
  * \brief DetInfoCtrlObj constructor
  *******************************************************************/
 DetInfoCtrlObj::DetInfoCtrlObj(Camera& adsc)
-              : m_adsc(adsc)
+	: m_adsc(adsc)
 {
 	DEB_CONSTRUCTOR();
 }
@@ -448,7 +448,7 @@ void SyncCtrlObj::getValidRanges(ValidRangesType& valid_ranges)
  * \brief BinCtrlObj constructor
  *******************************************************************/
 BinCtrlObj::BinCtrlObj(Camera& adsc)
-          : m_adsc(adsc)
+	: m_adsc(adsc)
 {
 	DEB_CONSTRUCTOR();
 }
