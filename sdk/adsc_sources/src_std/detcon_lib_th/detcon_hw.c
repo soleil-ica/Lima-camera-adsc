@@ -44,6 +44,77 @@ void	detcon_sleep(int nmsec)
 }
 
 /*
+ *	Take a list of standard header items (below) and allow a buffer
+ *	with value1=key1\n...valuen=keyn\n\0 to reassign the values from
+ *	this buffer before the final header is constructed in detcon_make_header_smv
+ *
+ *	This is a courtesy for the lima plug-in.
+ */
+
+struct redi {
+		char	*name;
+		int	fpar;
+	    };
+
+struct redi	redefinable_items_float[]  = {
+					{"OMEGA",	FLP_OMEGA},
+					{"KAPPA",	FLP_KAPPA},
+					{"PHI", 	FLP_PHI},
+					{"TWOTHETA",	FLP_TWOTHETA},
+					{"DISTANCE",	FLP_DISTANCE},
+					{"WAVELENGTH",	FLP_WAVELENGTH},
+					{"FLP_OSC_RANGE",FLP_OSC_RANGE},
+					{"TIME",	FLP_TIME},
+					{"DOSE",	FLP_DOSE},
+					{"BEAM_CENTER_X",FLP_BEAM_X},
+					{"BEAM_CENTER_Y",FLP_BEAM_Y},
+					{NULL,		0}
+				      };
+
+struct redi	redefinable_items_int[]  = {
+					{"AXIS",	FLP_AXIS},
+					{NULL,		0}
+				    };
+
+int	detcon_redefine_headerparams(char *buf)
+{
+	int	i;
+	char	*cp, *cpe;
+	float	fval;
+	int	ival;
+
+	//  fprintf(stdout, "detcon_redefine_headerparams:\n%s\n", buf);
+	for(i = 0; redefinable_items_float[i].name != NULL; i++)
+	{
+		if(NULL != (cp = strstr(buf, redefinable_items_float[i].name)))
+		{
+			if(NULL != (cpe = strstr(cp, "=")))
+			{
+				fval = atof(cpe + 1);
+				//  fprintf(stdout, "Setting parameter %s (number %d) to %.6f\n",
+				//	redefinable_items_float[i].name, redefinable_items_float[i].fpar, fval);
+				CCDSetFilePar(redefinable_items_float[i].fpar, (char *) &fval);
+				continue;
+			}
+		}
+	}
+
+	for(i = 0; redefinable_items_int[i].name != NULL; i++)
+	{
+		if(NULL != (cp = strstr(buf, redefinable_items_int[i].name)))
+		{
+			if(NULL != (cpe = strstr(cp, "=")))
+			{
+				ival = atoi(cpe + 1);
+				CCDSetFilePar(redefinable_items_int[i].fpar, (char *) &ival);
+				continue;
+			}
+		}
+	}
+	return(0);
+}
+
+/*
  *	detcon_make_header_smv  -  make a suitable SMV header.
  */
 
@@ -61,6 +132,8 @@ void	detcon_make_header_smv()
 	char	buf[32];
 	char	*cptr;
 	int	endian_test;
+
+	detcon_redefine_headerparams(dtc_headerparams);
 
 	clrhd(made_header);
 

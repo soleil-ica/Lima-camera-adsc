@@ -101,6 +101,7 @@ char	dtc_read_filename[2048];
 char	dtc_userdef_str[2048];
 char	dtc_userret[20480];
 char	dtc_merge_header[20480];
+char	dtc_headerparams[20480];
 int	dtc_pixel_size;
 int	dtc_image_kind;
 int	dtc_lastimage;

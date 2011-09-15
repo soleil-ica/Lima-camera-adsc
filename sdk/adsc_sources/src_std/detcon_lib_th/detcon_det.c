@@ -277,10 +277,10 @@ int	detcon_output_gather_receive(int fd)
 	ret = detcon_read_until(fd,dtc_xform_reply,sizeof dtc_xform_reply,detterm);
 
 	if(ret <= 0)
-	  {
+	{
 	        detcon_notify_server_eof(fd, errno);
 	        return(CCD_DET_DISCONNECTED);
-	  }
+	}
 
 	retstr = "normal";
 	detret = CCD_DET_OK;

@@ -3,13 +3,13 @@ CFLAGS = $(CFLAGS_OS) -D$(OSTYPE)
 IOFLAGS = 
 OEXTS = detcon_test_th.o
 OBS  = 
-OBJS = $(OEXTS) $(OBS) ../../lib/$(OSTYPE)/libdetcon_th.a ../../lib/$(OSTYPE)/libauxlib.a 
+OBJS = $(OEXTS) $(OBS) -ldetcon_th ../../lib/$(OSTYPE)/libauxlib.a
 DD = ../../bin/$(OSTYPE)
 
 PRCMD = pr
 
 $(DD)/detcon_test_th : $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(IOFLAGS) -o $(DD)/detcon_test_th
+	$(CC) $(CFLAGS) -L../../lib/linux $(OBJS) $(LDFLAGS) $(IOFLAGS) -o $(DD)/detcon_test_th
 
 $(OEXTS) : ../incl/ccdconv.h 
 

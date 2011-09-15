@@ -64,6 +64,7 @@ struct dtc_parstruct flp_param[] = {
 	{ FLP_JPEG2_NAME,		DTC_TYPE_STRING,	dtc_jpeg2_name,			NULL,			NULL },
 	{ FLP_JPEG2_SIZE,		DTC_TYPE_STRING,	dtc_jpeg2_size,			NULL,			NULL },
 	{ FLP_OUTFILE_TYPE,	DTC_TYPE_INT,		(char *) &dtc_outfile_type,	NULL,			NULL },
+	{ FLP_HEADERPARAMS,	DTC_TYPE_STRING,	dtc_headerparams,		NULL,			NULL },
 	{ 0,			0,			NULL,				NULL,			NULL }
      };
 

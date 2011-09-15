@@ -10,6 +10,7 @@ PRCMD = pr
 
 $(DD)/libdetcon_th.a : $(OBJS)
 	/bin/rm -f $(DD)/libdetcon_th.a
+	/bin/rm -f $(DD)/libdetcon_th.so
 	ar rv $(DD)/libdetcon_th.a $(OBJS)
 	ar ts $(DD)/libdetcon_th.a
 	cc -shared -o $(DD)/libdetcon_th.so $(OBJS)

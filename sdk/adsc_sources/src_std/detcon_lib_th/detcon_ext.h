@@ -78,6 +78,7 @@ extern	char	dtc_read_filename[2048];
 extern	char	dtc_userdef_str[2048];
 extern	char	dtc_userret[20480];
 extern	char    dtc_merge_header[20480];
+extern	char	dtc_headerparams[20480];
 extern	float	dtc_pixel_size;
 extern	int	dtc_image_kind;
 extern	int	dtc_lastimage;

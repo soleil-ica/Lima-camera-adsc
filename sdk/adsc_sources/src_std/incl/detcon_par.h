@@ -56,4 +56,5 @@ enum {
 	FLP_JPEG2_NAME,		/* file name for second jpeg file (if specified) */
 	FLP_JPEG2_SIZE,		/* size of second jpeg file, as a string such as "colsxrow" (e,g. "128x128") */
 	FLP_OUTFILE_TYPE,	/* output file type: 0 for .img, 1 for just .cbf, and 2 for both .img and .cbf */
+	FLP_HEADERPARAMS,	/* argument=string: key1=value1\n...keyn=valuen\n\0 for one or more standard header items (used by lima) */
      };

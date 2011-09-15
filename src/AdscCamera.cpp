@@ -77,8 +77,6 @@ void Camera::AdscThread::execStartAcq()
 {
 	DEB_MEMBER_FUNCT();
 	
-	StdBufferCbMgr& buffer_mgr = m_adsc->m_buffer_ctrl_mgr.getBuffer();
-	buffer_mgr.setStartTimestamp(Timestamp::now());
 
 	AdscApi& adsc_api = m_adsc->m_adsc_api;
 	adsc_api.resetFrameNr();
@@ -100,13 +98,6 @@ void Camera::AdscThread::execStartAcq()
 		}
 
 		setStatus(Readout);
-		void *ptr = buffer_mgr.getFrameBufferPtr(frame_nb);
-		typedef unsigned char *BufferPtr;
-		adsc_api.getNextFrame(BufferPtr(ptr));
-
-		HwFrameInfoType frame_info;
-		frame_info.acq_frame_nb = frame_nb;
-		buffer_mgr.newFrameReady(frame_info);
 
 		req_time = m_adsc->m_lat_time;
 		if (req_time > 0) {
@@ -148,14 +139,15 @@ void Camera::init()
 	m_exp_time = 1.0;
 	m_lat_time = 0.0;
 	m_nb_frames = 1;
-	m_flp_kind = 0;
+	m_flp_kind = 5;//
 	m_bin_used = 2;
 	m_adc_used = 1;
 	m_output_raws = 0;
 	m_no_transform = 0;
-	m_use_stored_dark = 0;
+	m_use_stored_dark = 1;//
 	m_last_image = 0;
-	m_filename = "/home/ccd/sn902r_calib_2006/sim/F6_1_001";
+	m_path = "/927bis/ccd/limatest/";
+	m_filename = "default_1_001.img";
 
 	CCDInitialize();
 
@@ -167,15 +159,6 @@ void Camera::init()
 Camera::~Camera()
 {
 	DEB_DESTRUCTOR();
-}
-
-//-----------------------------------------------------
-//
-//-----------------------------------------------------
-HwBufferCtrlObj* Camera::getBufferMgr()
-{
-	DEB_MEMBER_FUNCT();
-	return &m_buffer_ctrl_mgr;
 }
 
 //-----------------------------------------------------
@@ -318,10 +301,38 @@ void Camera::setImageKind(int image_kind)
 //-----------------------------------------------------
 //
 //-----------------------------------------------------
-void Camera::setFilename(std::string filename)
+void Camera::setFileName(const std::string& name)
 {
 	DEB_MEMBER_FUNCT();
-	m_filename = filename;
+	m_filename = name;
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+const std::string& Camera::getFileName(void)
+{
+	DEB_MEMBER_FUNCT();  
+  return m_filename;
+}
+
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setImagePath(const std::string& path)
+{
+	DEB_MEMBER_FUNCT();
+	m_path = path;
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+const std::string& Camera::getImagePath(void)
+{
+	DEB_MEMBER_FUNCT();
+  return m_path;
 }
 
 //-----------------------------------------------------
@@ -336,21 +347,32 @@ void Camera::setLastImage(int last_image)
 //-----------------------------------------------------
 //
 //-----------------------------------------------------
+void Camera::setHeaderParameters(const std::string& header)
+{
+	DEB_MEMBER_FUNCT();
+	DEB_TRACE()<<"setHeaderParameters ["<< const_cast<char*>(header.c_str()) <<"]";
+	CCDSetFilePar(FLP_HEADERPARAMS,  const_cast<char*>(header.c_str()));
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
 Camera::Status Camera::getStatus()
 {
 	DEB_MEMBER_FUNCT();
 	int thread_status = m_thread.getStatus();
-	switch (thread_status) {
-	case AdscThread::Ready:
-		return Camera::Ready;
-	case AdscThread::Exposure:
-		return Camera::Exposure;
-	case AdscThread::Readout:
-		return Camera::Readout;
-	case AdscThread::Latency:
-		return Camera::Latency;
-	default:
-		throw LIMA_HW_EXC(Error, "Invalid thread status");
+	switch (thread_status)
+  {
+    case AdscThread::Ready:
+      return Camera::Ready;
+    case AdscThread::Exposure:
+      return Camera::Exposure;
+    case AdscThread::Readout:
+      return Camera::Readout;
+    case AdscThread::Latency:
+      return Camera::Latency;
+    default:
+      throw LIMA_HW_EXC(Error, "Invalid thread status");
 	}
 }
 
@@ -363,9 +385,9 @@ void Camera::startAcq()
 	DEB_MEMBER_FUNCT();
 
 	float	f_stat_time;
+	float	f_stat_wavelength = 1.0;	// need at least a default value
 
 	m_thread.m_force_stop = false;		//ugly but works
-	m_buffer_ctrl_mgr.getBuffer().setStartTimestamp(Timestamp::now());
 
 //
 //	interface to the ccd library, starting image.
@@ -373,9 +395,11 @@ void Camera::startAcq()
 //	These items will change from image to image
 //
 	f_stat_time = m_exp_time;
+	std::string full_file_name = m_path+m_filename;
 	CCDSetFilePar(FLP_TIME, (char *) &f_stat_time);
-	CCDSetFilePar(FLP_FILENAME,(char *) m_filename.c_str());
+	CCDSetFilePar(FLP_FILENAME,(char *) full_file_name.c_str());
 	CCDSetFilePar(FLP_KIND, (char *) &m_flp_kind);
+	CCDSetFilePar(FLP_WAVELENGTH, (char *) &f_stat_wavelength);
 //
 //	These items do not change (at the present time)
 //

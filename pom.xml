@@ -57,5 +57,11 @@
             </plugin>
         </plugins>
     </build>
+  <dependencies>
+    <dependency>
+      <groupId>uk.ac.ccp4</groupId>
+      <artifactId>DiffractionImage-${aol}-shared-release</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

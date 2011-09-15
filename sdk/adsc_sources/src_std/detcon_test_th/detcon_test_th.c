@@ -32,6 +32,7 @@ char	*argv[];
 	char	prefix[100];
 	int	ex_time;
 	int	start, end, dez, n;
+	char	*header_parameters = "DISTANCE=330\nPHI=88.\nOMEGA=123.0";
 
 	bin = 1;
 	adc = 1;
@@ -106,6 +107,7 @@ char	*argv[];
         CCDSetFilePar(FLP_WAVELENGTH,&wave);
         CCDSetFilePar(FLP_OSC_RANGE,&osc_width);
 	CCDSetFilePar(FLP_PHI,&phi);
+	CCDSetFilePar(FLP_HEADERPARAMS, header_parameters);
 
 	for(nimages = 0; nimages < 2; nimages++)
 	{
