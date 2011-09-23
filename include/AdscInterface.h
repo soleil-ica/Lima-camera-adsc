@@ -40,7 +40,7 @@ namespace Adsc
  * \class DetInfoCtrlObj
  * \brief Control object providing simulator detector info interface
  *******************************************************************/
-class  DetInfoCtrlObj : public HwDetInfoCtrlObj
+class DetInfoCtrlObj : public HwDetInfoCtrlObj
 {
 	DEB_CLASS_NAMESPC(DebModCamera, "DetInfoCtrlObj", "Adsc");
 public:
@@ -52,7 +52,7 @@ public:
 
 	virtual void getDefImageType(ImageType& def_image_type);
 	virtual void getCurrImageType(ImageType& curr_image_type);
-	virtual void setCurrImageType(ImageType  curr_image_type);
+	virtual void setCurrImageType(ImageType curr_image_type);
 
 	virtual void getPixelSize(double& pixel_size);
 	virtual void getDetectorType(std::string& det_type);
@@ -62,10 +62,10 @@ public:
 	virtual void unregisterMaxImageSizeCallback(HwMaxImageSizeCallback& cb);
 
 private:
-	class MaxImageSizeCallbackGen: public HwMaxImageSizeCallbackGen
+	class MaxImageSizeCallbackGen : public HwMaxImageSizeCallbackGen
 	{
-    protected:
-      virtual void setMaxImageSizeCallbackActive(bool cb_active);
+	protected:
+		virtual void setMaxImageSizeCallbackActive(bool cb_active);
 	};
 
 	Camera& m_adsc;
@@ -85,12 +85,12 @@ public:
 	virtual ~BufferCtrlObj();
 
 	virtual void setFrameDim(const FrameDim& frame_dim);
-	virtual void getFrameDim(      FrameDim& frame_dim);
+	virtual void getFrameDim(FrameDim& frame_dim);
 
-	virtual void setNbBuffers(int  nb_buffers);
+	virtual void setNbBuffers(int nb_buffers);
 	virtual void getNbBuffers(int& nb_buffers);
 
-	virtual void setNbConcatFrames(int  nb_concat_frames);
+	virtual void setNbConcatFrames(int nb_concat_frames);
 	virtual void getNbConcatFrames(int& nb_concat_frames);
 
 	virtual void getMaxNbBuffers(int& max_nb_buffers);
@@ -101,32 +101,40 @@ public:
 	virtual void getStartTimestamp(Timestamp& start_ts);
 	virtual void getFrameInfo(int acq_frame_nb, HwFrameInfoType& info);
 
-  // -- Buffer control object
-  BufferCtrlMgr&      getBufferMgr()  {return m_buffer_ctrl_mgr;};
-  StdBufferCbMgr&     getBufferCbMgr(){return m_buffer_cb_mgr;};
-    
+	// -- Buffer control object
+	BufferCtrlMgr& getBufferMgr()
+	{
+		return m_buffer_ctrl_mgr;
+	}
+	;
+	StdBufferCbMgr& getBufferCbMgr()
+	{
+		return m_buffer_cb_mgr;
+	}
+	;
+
 	virtual void registerFrameCallback(HwFrameCallback& frame_cb);
 	virtual void unregisterFrameCallback(HwFrameCallback& frame_cb);
-  
-  // Reader stuff
-    void start();
-    void stop();
-    void reset();
-    int  getLastAcquiredFrame();    
+
+	// Reader stuff
+	void start();
+	void stop();
+	void reset();
+	int getLastAcquiredFrame();
 
 private:
-    SoftBufferAllocMgr      m_buffer_alloc_mgr;
-    StdBufferCbMgr          m_buffer_cb_mgr;
-    BufferCtrlMgr           m_buffer_ctrl_mgr;
-    Camera&                 m_cam;
-    Reader*                 m_reader;    
+	SoftBufferAllocMgr m_buffer_alloc_mgr;
+	StdBufferCbMgr m_buffer_cb_mgr;
+	BufferCtrlMgr m_buffer_ctrl_mgr;
+	Camera& m_cam;
+	Reader* m_reader;
 };
 
 /*******************************************************************
  * \class SyncCtrlObj
  * \brief Control object providing simulator synchronization interface
  *******************************************************************/
-class  SyncCtrlObj : public HwSyncCtrlObj
+class SyncCtrlObj : public HwSyncCtrlObj
 {
 	DEB_CLASS_NAMESPC(DebModCamera, "SyncCtrlObj", "Adsc");
 public:
@@ -134,16 +142,16 @@ public:
 	virtual ~SyncCtrlObj();
 
 	virtual bool checkTrigMode(TrigMode trig_mode);
-	virtual void setTrigMode(TrigMode  trig_mode);
+	virtual void setTrigMode(TrigMode trig_mode);
 	virtual void getTrigMode(TrigMode& trig_mode);
 
-	virtual void setExpTime(double  exp_time);
+	virtual void setExpTime(double exp_time);
 	virtual void getExpTime(double& exp_time);
 
-	virtual void setLatTime(double  lat_time);
+	virtual void setLatTime(double lat_time);
 	virtual void getLatTime(double& lat_time);
 
-	virtual void setNbHwFrames(int  nb_frames);
+	virtual void setNbHwFrames(int nb_frames);
 	virtual void getNbHwFrames(int& nb_frames);
 
 	virtual void getValidRanges(ValidRangesType& valid_ranges);
@@ -152,12 +160,11 @@ private:
 	Camera& m_adsc;
 };
 
-
 /*******************************************************************
  * \class adscBinCtrlObj
  * \brief Control object providing simulator binning interface
  *******************************************************************/
-class  BinCtrlObj : public HwBinCtrlObj
+class BinCtrlObj : public HwBinCtrlObj
 {
 	DEB_CLASS_NAMESPC(DebModCamera, "BinCtrlObj", "Adsc");
 public:
@@ -172,38 +179,45 @@ private:
 	Camera& m_adsc;
 };
 
-
 /*******************************************************************
  * \class Interface
  * \brief Adsc interface
  *******************************************************************/
-class  Interface : public HwInterface
+class Interface : public HwInterface
 {
 	DEB_CLASS_NAMESPC(DebModCamera, "Interface", "Adsc");
 public:
 	Interface(Camera& adsc);
 	virtual ~Interface();
 
-	virtual void getCapList(CapList&) const;
+	virtual void 	getCapList(CapList&) const;
 
-	virtual void reset(ResetLevel reset_level);
-	virtual void prepareAcq();
-	virtual void startAcq();
-	virtual void stopAcq();
-	virtual void getStatus(StatusType& status);
-	virtual int  getNbHwAcquiredFrames();
-  void                setFileName(const std::string& name);
-  const std::string&  getFileName(void);
-  void                setImagePath(const std::string& path);
-  const std::string&  getImagePath(void);
-	void setHeaderParameters(const std::string& header);
+	virtual void 	reset(ResetLevel reset_level);
+	virtual void 	prepareAcq();
+	virtual void 	startAcq();
+	virtual void 	stopAcq();
+	virtual void 	getStatus(StatusType& status);
+	virtual int 	getNbHwAcquiredFrames();
+	void 			setHeaderParameters(const std::string& header);
+	
+	void			setStoredImageDark(bool value);
+	bool			getStoredImageDark(void);
+	void    		setImageKind(int image_kind);
+	int	    		getImageKind(void);	
+	void    		setLastImage(int last_image);
+	int	    		getLastImage(void);		
+	
+	void 				setFileName(const std::string& name);
+	const std::string& 	getFileName(void);
+	void 				setImagePath(const std::string& path);
+	const std::string& 	getImagePath(void);	
 private:
-	Camera&         m_adsc;
-	CapList			    m_cap_list;
-	DetInfoCtrlObj	m_det_info;
-  BufferCtrlObj   m_buffer;
-	SyncCtrlObj		  m_sync;
-	BinCtrlObj		  m_bin;
+	Camera& 			m_adsc;
+	CapList 			m_cap_list;
+	DetInfoCtrlObj 		m_det_info;
+	BufferCtrlObj 		m_buffer;
+	SyncCtrlObj 		m_sync;
+	BinCtrlObj 			m_bin;
 };
 
 } // namespace Adsc

@@ -31,9 +31,9 @@ using namespace lima::Adsc;
 //-----------------------------------------------------
 //
 //-----------------------------------------------------
-Camera::AdscThread::AdscThread(Camera& adsc)
-	: m_adsc(&adsc)
-{	
+Camera::AdscThread::AdscThread(Camera& adsc) :
+		m_adsc(&adsc)
+{
 	m_acq_frame_nb = 0;
 	m_force_stop = false;
 }
@@ -61,11 +61,12 @@ void Camera::AdscThread::init()
 void Camera::AdscThread::execCmd(int cmd)
 {
 	int status = getStatus();
-	switch (cmd) {
-	case StartAcq:
-		if (status != Ready)
-			throw LIMA_HW_EXC(InvalidValue,  "Not Ready to StartAcq");
-		execStartAcq();
+	switch (cmd)
+	{
+		case StartAcq:
+			if (status != Ready)
+				throw LIMA_HW_EXC(InvalidValue, "Not Ready to StartAcq");
+			execStartAcq();
 		break;
 	}
 }
@@ -76,23 +77,24 @@ void Camera::AdscThread::execCmd(int cmd)
 void Camera::AdscThread::execStartAcq()
 {
 	DEB_MEMBER_FUNCT();
-	
 
 	AdscApi& adsc_api = m_adsc->m_adsc_api;
 	adsc_api.resetFrameNr();
 
 	int nb_frames = m_adsc->m_nb_frames;
 	int& frame_nb = m_acq_frame_nb;
-	for (frame_nb = 0; (frame_nb < nb_frames)||(nb_frames==0); frame_nb++) {
+	for (frame_nb = 0; (frame_nb < nb_frames) || (nb_frames == 0); frame_nb++)
+	{
 		double req_time;
-		if(m_force_stop)
+		if (m_force_stop)
 		{
 			m_force_stop = false;
 			setStatus(Ready);
 			return;
 		}
 		req_time = m_adsc->m_exp_time;
-		if (req_time > 0) {	
+		if (req_time > 0)
+		{
 			setStatus(Exposure);
 			usleep(long(req_time * 1e6));
 		}
@@ -100,7 +102,8 @@ void Camera::AdscThread::execStartAcq()
 		setStatus(Readout);
 
 		req_time = m_adsc->m_lat_time;
-		if (req_time > 0) {
+		if (req_time > 0)
+		{
 			setStatus(Latency);
 			usleep(long(req_time * 1e6));
 		}
@@ -120,11 +123,10 @@ int Camera::AdscThread::getNbAcquiredFrames()
 //-----------------------------------------------------
 //
 //-----------------------------------------------------
-Camera::Camera() : 
-  m_thread(*this)
+Camera::Camera() :	m_thread(*this)
 {
 	DEB_CONSTRUCTOR();
-	
+
 	init();
 
 	m_thread.start();
@@ -139,12 +141,12 @@ void Camera::init()
 	m_exp_time = 1.0;
 	m_lat_time = 0.0;
 	m_nb_frames = 1;
-	m_flp_kind = 5;//
+	m_flp_kind = 5; //
 	m_bin_used = 2;
 	m_adc_used = 1;
 	m_output_raws = 0;
 	m_no_transform = 0;
-	m_use_stored_dark = 1;//
+	m_use_stored_dark = 1; //
 	m_last_image = 0;
 	m_path = "/927bis/ccd/limatest/";
 	m_filename = "default_1_001.img";
@@ -199,7 +201,7 @@ void Camera::setExpTime(double exp_time)
 	DEB_MEMBER_FUNCT();
 	if (exp_time <= 0)
 		throw LIMA_HW_EXC(InvalidValue, "Invalid exposure time");
-		
+
 	m_exp_time = exp_time;
 }
 
@@ -220,7 +222,7 @@ void Camera::setLatTime(double lat_time)
 	DEB_MEMBER_FUNCT();
 	if (lat_time < 0)
 		throw LIMA_HW_EXC(InvalidValue, "Invalid latency time");
-		
+
 	m_lat_time = lat_time;
 }
 
@@ -292,10 +294,54 @@ void Camera::reset()
 //-----------------------------------------------------
 //
 //-----------------------------------------------------
+void Camera::setStoredImageDark(bool value)
+{
+	DEB_MEMBER_FUNCT();
+	m_use_stored_dark = value ? 1 : 0;
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+bool Camera::getStoredImageDark(void)
+{
+	return m_use_stored_dark;
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
 void Camera::setImageKind(int image_kind)
 {
 	DEB_MEMBER_FUNCT();
 	m_flp_kind = image_kind;
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+int Camera::getImageKind(void)
+{
+	DEB_MEMBER_FUNCT();
+	return m_flp_kind;
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Camera::setLastImage(int last_image)
+{
+	DEB_MEMBER_FUNCT();
+	m_last_image = last_image;
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+int Camera::getLastImage(void)
+{
+	DEB_MEMBER_FUNCT();
+	return m_last_image;
 }
 
 //-----------------------------------------------------
@@ -312,10 +358,9 @@ void Camera::setFileName(const std::string& name)
 //-----------------------------------------------------
 const std::string& Camera::getFileName(void)
 {
-	DEB_MEMBER_FUNCT();  
-  return m_filename;
+	DEB_MEMBER_FUNCT();
+	return m_filename;
 }
-
 
 //-----------------------------------------------------
 //
@@ -332,16 +377,7 @@ void Camera::setImagePath(const std::string& path)
 const std::string& Camera::getImagePath(void)
 {
 	DEB_MEMBER_FUNCT();
-  return m_path;
-}
-
-//-----------------------------------------------------
-//
-//-----------------------------------------------------
-void Camera::setLastImage(int last_image)
-{
-	DEB_MEMBER_FUNCT();
-	m_last_image = last_image;
+	return m_path;
 }
 
 //-----------------------------------------------------
@@ -350,9 +386,8 @@ void Camera::setLastImage(int last_image)
 void Camera::setHeaderParameters(const std::string& header)
 {
 	DEB_MEMBER_FUNCT();
-	DEB_TRACE()<<"setHeaderParameters ["<< const_cast<char*>(header.c_str()) <<"]";
-	CCDSetFilePar(FLP_HEADERPARAMS,  const_cast<char*>(header.c_str()));
-}
+	DEB_TRACE() << "setHeaderParameters [" << const_cast<char*>(header.c_str()) << "]";
+	CCDSetFilePar(FLP_HEADERPARAMS, const_cast<char*>(header.c_str()));}
 
 //-----------------------------------------------------
 //
@@ -362,17 +397,17 @@ Camera::Status Camera::getStatus()
 	DEB_MEMBER_FUNCT();
 	int thread_status = m_thread.getStatus();
 	switch (thread_status)
-  {
-    case AdscThread::Ready:
-      return Camera::Ready;
-    case AdscThread::Exposure:
-      return Camera::Exposure;
-    case AdscThread::Readout:
-      return Camera::Readout;
-    case AdscThread::Latency:
-      return Camera::Latency;
-    default:
-      throw LIMA_HW_EXC(Error, "Invalid thread status");
+	{
+		case AdscThread::Ready:
+			return Camera::Ready;
+		case AdscThread::Exposure:
+			return Camera::Exposure;
+		case AdscThread::Readout:
+			return Camera::Readout;
+		case AdscThread::Latency:
+			return Camera::Latency;
+		default:
+			throw LIMA_HW_EXC(Error, "Invalid thread status");
 	}
 }
 
@@ -384,10 +419,10 @@ void Camera::startAcq()
 
 	DEB_MEMBER_FUNCT();
 
-	float	f_stat_time;
-	float	f_stat_wavelength = 1.0;	// need at least a default value
+	float f_stat_time;
+	float f_stat_wavelength = 1.0; // need at least a default value
 
-	m_thread.m_force_stop = false;		//ugly but works
+	m_thread.m_force_stop = false; //ugly but works
 
 //
 //	interface to the ccd library, starting image.
@@ -395,9 +430,9 @@ void Camera::startAcq()
 //	These items will change from image to image
 //
 	f_stat_time = m_exp_time;
-	std::string full_file_name = m_path+m_filename;
+	std::string full_file_name = m_path + m_filename;
 	CCDSetFilePar(FLP_TIME, (char *) &f_stat_time);
-	CCDSetFilePar(FLP_FILENAME,(char *) full_file_name.c_str());
+	CCDSetFilePar(FLP_FILENAME, (char *) full_file_name.c_str());
 	CCDSetFilePar(FLP_KIND, (char *) &m_flp_kind);
 	CCDSetFilePar(FLP_WAVELENGTH, (char *) &f_stat_wavelength);
 //
@@ -410,11 +445,11 @@ void Camera::startAcq()
 	CCDSetHwPar(HWP_STORED_DARK, (char *) &m_use_stored_dark);
 
 	CCDStartExposure();
-	while(DTC_STATE_EXPOSING != CCDState())
+	while (DTC_STATE_EXPOSING != CCDState())
 	{
-		if(DTC_STATE_ERROR == CCDState())
+		if (DTC_STATE_ERROR == CCDState())
 		{
-			DEB_TRACE() << "Error returned from CCDStartExposure()";  
+			DEB_TRACE() << "Error returned from CCDStartExposure()";
 			return;
 		}
 	}
@@ -427,9 +462,9 @@ void Camera::startAcq()
 //
 //-----------------------------------------------------
 void Camera::stopAcq()
-{		
+{
 	DEB_MEMBER_FUNCT();
-	m_thread.m_force_stop = true;		//ugly but works
+	m_thread.m_force_stop = true; //ugly but works
 	m_thread.sendCmd(AdscThread::StopAcq);
 	m_thread.waitStatus(AdscThread::Ready);
 
@@ -437,15 +472,15 @@ void Camera::stopAcq()
 //	Interface to CCD library here.
 //
 	CCDStopExposure();
-	while(DTC_STATE_IDLE != CCDState())
+	while (DTC_STATE_IDLE != CCDState())
 	{
-		if(DTC_STATE_ERROR == CCDState())
+		if (DTC_STATE_ERROR == CCDState())
 		{
-			DEB_TRACE() << "Error returned from CCDStopExposure()";  
+			DEB_TRACE() << "Error returned from CCDStopExposure()";
 			return;
 		}
 	}
-	if(5 == m_flp_kind)
+	if (5 == m_flp_kind)
 		m_last_image = 1;
 	else
 		m_last_image = 0;

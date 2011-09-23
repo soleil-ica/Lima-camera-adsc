@@ -44,8 +44,8 @@ class  Camera
 	DEB_CLASS_NAMESPC(DebModCamera, "Camera", "Adsc");
 public:
 	enum Status
-  {
-    Ready, Exposure, Readout, Latency,
+	{
+		Ready, Exposure, Readout, Latency,
 	};
 
 	Camera();
@@ -75,16 +75,20 @@ public:
 	int     getNbAcquiredFrames();
 
 	void    getMaxImageSize(Size& max_image_size);
-
 	void    reset();
+	//ADSC specific stuff
+	void 	setHeaderParameters(const std::string& header);	
+	void	setStoredImageDark(bool value);
+	bool	getStoredImageDark(void);
 	void    setImageKind(int image_kind);
+	int	    getImageKind(void);	
 	void    setLastImage(int last_image);
+	int	    getLastImage(void);	
 
 	void                setFileName(const std::string& name);
 	const std::string&  getFileName(void);
 	void                setImagePath(const std::string& path);
 	const std::string&  getImagePath(void);
-	void setHeaderParameters(const std::string& header);
 
 private:
 	class AdscThread : public CmdThread
@@ -93,27 +97,28 @@ private:
     public:
       enum
       { // Status
-        Ready = MaxThreadStatus, Exposure, Readout, Latency,
+    	  Ready = MaxThreadStatus, Exposure, Readout, Latency,
       };
   
-      enum { // Cmd 
-        StartAcq = MaxThreadCmd, StopAcq,
+      enum 
+      { // Cmd 
+    	  StartAcq = MaxThreadCmd, StopAcq,
       };
       
       AdscThread(Camera& adsc);
   
-      virtual void start();
+      virtual void 	start();
       
-      int getNbAcquiredFrames();
-      bool m_force_stop;
+      int 			getNbAcquiredFrames();
+      bool 			m_force_stop;
   
     protected:
-      virtual void init();
-      virtual void execCmd(int cmd);
+      virtual void 	init();
+      virtual void 	execCmd(int cmd);
     private:
-      void execStartAcq();
-      Camera* m_adsc;
-      int m_acq_frame_nb;
+      void 			execStartAcq();
+      Camera* 		m_adsc;
+      int 			m_acq_frame_nb;
 	};
 
 

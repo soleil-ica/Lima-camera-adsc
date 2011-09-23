@@ -72,7 +72,7 @@ void Reader::start()
         delete m_dw;
         m_dw = 0;
       }
-      m_dw = new gdshare::DirectoryWatcher(/*m_cam.getDirectoryWatcherPath()*/"/home/experiences/proxima2a/com-proxima2a/DeviceServers/my_images/");
+      m_dw = new gdshare::DirectoryWatcher(m_cam.getImagePath());
       this->post(new yat::Message(ADSC_START_MSG), kPOST_MSG_TMO);
     }
     catch (Exception &e)

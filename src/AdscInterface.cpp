@@ -24,8 +24,8 @@
 /*******************************************************************
  * \brief DetInfoCtrlObj constructor
  *******************************************************************/
-DetInfoCtrlObj::DetInfoCtrlObj(Camera& adsc)
-	: m_adsc(adsc)
+DetInfoCtrlObj::DetInfoCtrlObj(Camera& adsc) :
+		m_adsc(adsc)
 {
 	DEB_CONSTRUCTOR();
 }
@@ -148,14 +148,14 @@ void DetInfoCtrlObj::MaxImageSizeCallbackGen::setMaxImageSizeCallbackActive(bool
  * \brief BufferCtrlObj constructor
  *******************************************************************/
 
-BufferCtrlObj::BufferCtrlObj(Camera& cam)
-            : m_buffer_cb_mgr(m_buffer_alloc_mgr),
-              m_buffer_ctrl_mgr(m_buffer_cb_mgr),
-              m_cam(cam)
+BufferCtrlObj::BufferCtrlObj(Camera& cam) :
+		m_buffer_cb_mgr(m_buffer_alloc_mgr),
+		m_buffer_ctrl_mgr(m_buffer_cb_mgr),
+		m_cam(cam)
 {
 	DEB_CONSTRUCTOR();
-  m_reader = new Reader(cam,*this);
-  m_reader->go(2000);  
+	m_reader = new Reader(cam, *this);
+	m_reader->go(2000);
 }
 
 //-----------------------------------------------------
@@ -164,8 +164,8 @@ BufferCtrlObj::BufferCtrlObj(Camera& cam)
 BufferCtrlObj::~BufferCtrlObj()
 {
 	DEB_DESTRUCTOR();
-  m_reader->stop(true);
-  m_reader->exit();  
+	m_reader->stop(true);
+	m_reader->exit();
 }
 
 //-----------------------------------------------------
@@ -174,7 +174,7 @@ BufferCtrlObj::~BufferCtrlObj()
 void BufferCtrlObj::setFrameDim(const FrameDim& frame_dim)
 {
 	DEB_MEMBER_FUNCT();
-  m_buffer_ctrl_mgr.setFrameDim(frame_dim);
+	m_buffer_ctrl_mgr.setFrameDim(frame_dim);
 }
 
 //-----------------------------------------------------
@@ -228,7 +228,7 @@ void BufferCtrlObj::getNbConcatFrames(int& nb_concat_frames)
 void BufferCtrlObj::getMaxNbBuffers(int& max_nb_buffers)
 {
 	DEB_MEMBER_FUNCT();
-  m_buffer_ctrl_mgr.getMaxNbBuffers(max_nb_buffers);
+	m_buffer_ctrl_mgr.getMaxNbBuffers(max_nb_buffers);
 }
 
 //-----------------------------------------------------
@@ -237,7 +237,7 @@ void BufferCtrlObj::getMaxNbBuffers(int& max_nb_buffers)
 void *BufferCtrlObj::getBufferPtr(int buffer_nb, int concat_frame_nb)
 {
 	DEB_MEMBER_FUNCT();
-   return m_buffer_ctrl_mgr.getBufferPtr(buffer_nb, concat_frame_nb);
+	return m_buffer_ctrl_mgr.getBufferPtr(buffer_nb, concat_frame_nb);
 }
 
 //-----------------------------------------------------
@@ -246,7 +246,7 @@ void *BufferCtrlObj::getBufferPtr(int buffer_nb, int concat_frame_nb)
 void *BufferCtrlObj::getFramePtr(int acq_frame_nb)
 {
 	DEB_MEMBER_FUNCT();
-  return m_buffer_ctrl_mgr.getFramePtr(acq_frame_nb);
+	return m_buffer_ctrl_mgr.getFramePtr(acq_frame_nb);
 }
 
 //-----------------------------------------------------
@@ -290,8 +290,8 @@ void BufferCtrlObj::unregisterFrameCallback(HwFrameCallback& frame_cb)
 //-----------------------------------------------------
 void BufferCtrlObj::start()
 {
-  DEB_MEMBER_FUNCT();
-  m_reader->start();
+	DEB_MEMBER_FUNCT();
+	m_reader->start();
 }
 
 //-----------------------------------------------------
@@ -299,8 +299,8 @@ void BufferCtrlObj::start()
 //-----------------------------------------------------
 void BufferCtrlObj::stop()
 {
-  DEB_MEMBER_FUNCT();
-  m_reader->stop(false);
+	DEB_MEMBER_FUNCT();
+	m_reader->stop(false);
 }
 
 //-----------------------------------------------------
@@ -308,8 +308,8 @@ void BufferCtrlObj::stop()
 //-----------------------------------------------------
 void BufferCtrlObj::reset()
 {
-  DEB_MEMBER_FUNCT();
-  m_reader->reset();
+	DEB_MEMBER_FUNCT();
+	m_reader->reset();
 }
 
 //-----------------------------------------------------
@@ -317,14 +317,15 @@ void BufferCtrlObj::reset()
 //-----------------------------------------------------
 int BufferCtrlObj::getLastAcquiredFrame()
 {
-  return m_reader->getLastAcquiredFrame();
+	return m_reader->getLastAcquiredFrame();
 }
 
 /*******************************************************************
  * \brief SyncCtrlObj constructor
  *******************************************************************/
-SyncCtrlObj::SyncCtrlObj(Camera& adsc)
-            : HwSyncCtrlObj(), m_adsc(adsc)
+SyncCtrlObj::SyncCtrlObj(Camera& adsc) :
+		HwSyncCtrlObj(),
+		m_adsc(adsc)
 {
 	DEB_CONSTRUCTOR();
 }
@@ -344,15 +345,15 @@ bool SyncCtrlObj::checkTrigMode(TrigMode trig_mode)
 {
 	DEB_MEMBER_FUNCT();
 	bool valid_mode = false;
-  switch (trig_mode)
-  {
-    case IntTrig:
-      valid_mode = true;
-    break;
-    default:
-      valid_mode = false;
-  }
-  return valid_mode;
+	switch(trig_mode)
+	{
+		case IntTrig :
+			valid_mode = true;
+		break;
+		default :
+			valid_mode = false;
+	}
+	return valid_mode;
 }
 
 //-----------------------------------------------------
@@ -360,10 +361,10 @@ bool SyncCtrlObj::checkTrigMode(TrigMode trig_mode)
 //-----------------------------------------------------
 void SyncCtrlObj::setTrigMode(TrigMode trig_mode)
 {
-	DEB_MEMBER_FUNCT();    
-  if (!checkTrigMode(trig_mode))
-      THROW_HW_ERROR(InvalidValue) << "Invalid " << DEB_VAR1(trig_mode);
-  //m_adsc.setTrigMode(trig_mode);
+	DEB_MEMBER_FUNCT();
+	if(!checkTrigMode(trig_mode))
+		THROW_HW_ERROR(InvalidValue) << "Invalid " << DEB_VAR1(trig_mode);
+	//m_adsc.setTrigMode(trig_mode);
 }
 
 //-----------------------------------------------------
@@ -443,12 +444,11 @@ void SyncCtrlObj::getValidRanges(ValidRangesType& valid_ranges)
 	valid_ranges.max_lat_time = max_time;
 }
 
-
 /*******************************************************************
  * \brief BinCtrlObj constructor
  *******************************************************************/
-BinCtrlObj::BinCtrlObj(Camera& adsc)
-	: m_adsc(adsc)
+BinCtrlObj::BinCtrlObj(Camera& adsc) :
+		m_adsc(adsc)
 {
 	DEB_CONSTRUCTOR();
 }
@@ -488,25 +488,26 @@ void BinCtrlObj::checkBin(Bin& bin)
 	m_adsc.checkBin(bin);
 }
 
-
 /*******************************************************************
  * \brief Interface constructor
  *******************************************************************/
-Interface::Interface(Camera& adsc)
-        : m_adsc(adsc), m_det_info(adsc),
-          m_buffer(adsc),
-          m_sync(adsc), m_bin(adsc)
+Interface::Interface(Camera& adsc) :
+		m_adsc(adsc),
+		m_det_info(adsc),
+		m_buffer(adsc),
+		m_sync(adsc),
+		m_bin(adsc)
 {
 	DEB_CONSTRUCTOR();
 	HwDetInfoCtrlObj *det_info = &m_det_info;
 	m_cap_list.push_back(HwCap(det_info));
-
+	
 	HwSyncCtrlObj *sync = &m_sync;
 	m_cap_list.push_back(HwCap(sync));
-
-  HwBufferCtrlObj *buffer = &m_buffer;
-  m_cap_list.push_back(HwCap(buffer));
-
+	
+	HwBufferCtrlObj *buffer = &m_buffer;
+	m_cap_list.push_back(HwCap(buffer));
+	
 	HwBinCtrlObj *bin = &m_bin;
 	m_cap_list.push_back(HwCap(bin));
 }
@@ -525,7 +526,7 @@ Interface::~Interface()
 void Interface::getCapList(HwInterface::CapList &aReturnCapList) const
 {
 	DEB_MEMBER_FUNCT();
-  	aReturnCapList = m_cap_list;
+	aReturnCapList = m_cap_list;
 }
 
 //-----------------------------------------------------
@@ -535,14 +536,14 @@ void Interface::reset(ResetLevel reset_level)
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc.reset();
-	m_buffer.stop();    
+	m_buffer.stop();
 	Size image_size;
 	m_det_info.getMaxImageSize(image_size);
 	ImageType image_type;
 	m_det_info.getDefImageType(image_type);
 	FrameDim frame_dim(image_size, image_type);
 	m_buffer.setFrameDim(frame_dim);
-
+	
 	m_buffer.setNbConcatFrames(1);
 	m_buffer.setNbBuffers(1);
 }
@@ -553,7 +554,7 @@ void Interface::reset(ResetLevel reset_level)
 void Interface::prepareAcq()
 {
 	DEB_MEMBER_FUNCT();
-  m_buffer.reset(); 
+	m_buffer.reset();
 }
 
 //-----------------------------------------------------
@@ -563,7 +564,7 @@ void Interface::startAcq()
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc.startAcq();
-  m_buffer.start();    
+	m_buffer.start();
 }
 
 //-----------------------------------------------------
@@ -573,7 +574,7 @@ void Interface::stopAcq()
 {
 	DEB_MEMBER_FUNCT();
 	m_adsc.stopAcq();
-  m_buffer.stop();    
+	m_buffer.stop();
 }
 
 //-----------------------------------------------------
@@ -583,24 +584,23 @@ void Interface::getStatus(StatusType& status)
 {
 	DEB_MEMBER_FUNCT();
 	Camera::Status adsc_status = m_adsc.getStatus();
-	switch (adsc_status)
-  {
-    case Camera::Ready:
-      status.acq = AcqReady;
-      status.det = DetIdle;
-      break;
-    case Camera::Exposure:
-      status.det = DetExposure;
-      goto Running;
-    case Camera::Readout:
-      status.det = DetReadout;
-      goto Running;
-    case Camera::Latency:
-      status.det = DetLatency;
-    Running:
-      status.acq = AcqRunning;
-      break;
-  }
+	switch(adsc_status)
+	{
+		case Camera::Ready :
+			status.acq = AcqReady;
+			status.det = DetIdle;
+		break;
+		case Camera::Exposure :
+			status.det = DetExposure;
+			goto Running;
+		case Camera::Readout :
+			status.det = DetReadout;
+			goto Running;
+		case Camera::Latency :
+			status.det = DetLatency;
+			Running: status.acq = AcqRunning;
+		break;
+	}
 	status.det_mask = DetExposure | DetReadout | DetLatency;
 }
 
@@ -613,13 +613,68 @@ int Interface::getNbHwAcquiredFrames()
 	return m_adsc.getNbAcquiredFrames();
 }
 
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Interface::setStoredImageDark(bool value)
+{
+	DEB_MEMBER_FUNCT();
+	m_adsc.setStoredImageDark(value);
+		
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+bool Interface::getStoredImageDark(void)
+{
+	return m_adsc.getStoredImageDark();
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Interface::setImageKind(int image_kind)
+{
+	DEB_MEMBER_FUNCT();
+	m_adsc.setImageKind(image_kind);
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+int Interface::getImageKind(void)
+{
+	DEB_MEMBER_FUNCT();
+	return 	m_adsc.getImageKind();
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Interface::setLastImage(int last_image)
+{
+	DEB_MEMBER_FUNCT();
+	m_adsc.setImageKind(last_image);
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+int Interface::getLastImage(void)
+{
+	DEB_MEMBER_FUNCT();
+	return 	m_adsc.getImageKind();
+}
+
 //-----------------------------------------------------
 //
 //-----------------------------------------------------
 void Interface::setFileName(const std::string& name)
 {
-	DEB_MEMBER_FUNCT();    
-  m_adsc.setFileName(name);
+	DEB_MEMBER_FUNCT();
+	m_adsc.setFileName(name);
 }
 
 //-----------------------------------------------------
@@ -628,7 +683,7 @@ void Interface::setFileName(const std::string& name)
 const std::string& Interface::getFileName(void)
 {
 	DEB_MEMBER_FUNCT();
-  return  m_adsc.getFileName();
+	return m_adsc.getFileName();
 }
 
 //-----------------------------------------------------
@@ -637,7 +692,7 @@ const std::string& Interface::getFileName(void)
 void Interface::setImagePath(const std::string& path)
 {
 	DEB_MEMBER_FUNCT();
-  m_adsc.setImagePath(path);
+	m_adsc.setImagePath(path);
 }
 
 //-----------------------------------------------------
@@ -645,8 +700,8 @@ void Interface::setImagePath(const std::string& path)
 //-----------------------------------------------------
 const std::string& Interface::getImagePath(void)
 {
-  DEB_MEMBER_FUNCT();
-  return  m_adsc.getImagePath();
+	DEB_MEMBER_FUNCT();
+	return m_adsc.getImagePath();
 }
 
 //-----------------------------------------------------

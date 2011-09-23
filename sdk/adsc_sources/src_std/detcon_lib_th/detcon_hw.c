@@ -63,7 +63,7 @@ struct redi	redefinable_items_float[]  = {
 					{"TWOTHETA",	FLP_TWOTHETA},
 					{"DISTANCE",	FLP_DISTANCE},
 					{"WAVELENGTH",	FLP_WAVELENGTH},
-					{"FLP_OSC_RANGE",FLP_OSC_RANGE},
+					{"OSC_RANGE",	FLP_OSC_RANGE},
 					{"TIME",	FLP_TIME},
 					{"DOSE",	FLP_DOSE},
 					{"BEAM_CENTER_X",FLP_BEAM_X},

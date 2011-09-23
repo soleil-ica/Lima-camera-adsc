@@ -19,8 +19,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //###########################################################################
-#ifndef SIMUCOMPATIBILITY_H
-#define SIMUCOMPATIBILITY_H
+#ifndef ADSCCOMPATIBILITY_H
+#define ADSCCOMPATIBILITY_H
 
 #ifdef WIN32
 #ifdef LIBADSC_EXPORTS
