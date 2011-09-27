@@ -320,6 +320,14 @@ int BufferCtrlObj::getLastAcquiredFrame()
     return m_reader->getLastAcquiredFrame();
 }
 
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+bool BufferCtrlObj::isTimeoutSignaled()
+{
+    return m_reader->isTimeoutSignaled();
+}
+
 /*******************************************************************
  * \brief SyncCtrlObj constructor
  *******************************************************************/
@@ -592,8 +600,10 @@ void Interface::getStatus(StatusType& status)
 			status.det = DetIdle;
 	        int nbHwFrames = 0;
 	        m_sync.getNbHwFrames(nbHwFrames);
-	        if(getNbHwAcquiredFrames() >= nbHwFrames)
+	        if( m_buffer.getLastAcquiredFrame() >= nbHwFrames)
 	            status.acq = AcqReady;
+	        else if(m_buffer.isTimeoutSignaled())
+	        	status.acq = AcqFault;
 	        else
 	            status.acq = AcqRunning;
 		}
@@ -620,7 +630,7 @@ void Interface::getStatus(StatusType& status)
 int Interface::getNbHwAcquiredFrames()
 {
 	DEB_MEMBER_FUNCT();
-    int acq_frames = m_buffer.getLastAcquiredFrame()+1;
+    int acq_frames = m_buffer.getLastAcquiredFrame();
     return acq_frames;
 }
 

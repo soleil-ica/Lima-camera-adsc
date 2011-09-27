@@ -120,7 +120,8 @@ public:
 	void start();
 	void stop();
 	void reset();
-	int getLastAcquiredFrame();
+	int  getLastAcquiredFrame();
+	bool isTimeoutSignaled();
 
 private:
 	SoftBufferAllocMgr m_buffer_alloc_mgr;

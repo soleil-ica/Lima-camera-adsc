@@ -63,12 +63,14 @@ public:
   void stop(bool immediatley = true);
   void reset();
   int  getLastAcquiredFrame(void);
+  bool isTimeoutSignaled(void);
 
   //- [yat::Task implementation]
 protected: 
   virtual void handle_message( yat::Message& msg )    throw (yat::Exception);
 
 private:
+  void addNewFrame(std::string filename);
 
   //- Mutex
   yat::Mutex                  lock_;

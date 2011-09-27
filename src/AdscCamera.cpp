@@ -450,6 +450,7 @@ void Camera::startAcq()
 		if (DTC_STATE_ERROR == CCDState())
 		{
 			DEB_TRACE() << "Error returned from CCDStartExposure()";
+			throw LIMA_HW_EXC(Error, "Error returned from CCDStartExposure()");
 			return;
 		}
 	}
@@ -465,9 +466,6 @@ void Camera::stopAcq()
 {
 	DEB_MEMBER_FUNCT();
 	m_thread.m_force_stop = true; //ugly but works
-	m_thread.sendCmd(AdscThread::StopAcq);
-	m_thread.waitStatus(AdscThread::Ready);
-
 //
 //	Interface to CCD library here.
 //
@@ -477,6 +475,7 @@ void Camera::stopAcq()
 		if (DTC_STATE_ERROR == CCDState())
 		{
 			DEB_TRACE() << "Error returned from CCDStopExposure()";
+			throw LIMA_HW_EXC(Error, "Error returned from CCDStopExposure()");
 			return;
 		}
 	}
@@ -487,6 +486,9 @@ void Camera::stopAcq()
 
 	CCDSetFilePar(FLP_LASTIMAGE, (char *) &m_last_image);
 	CCDGetImage();
+
+	m_thread.sendCmd(AdscThread::StopAcq);
+	m_thread.waitStatus(AdscThread::Ready);
 }
 
 //-----------------------------------------------------
