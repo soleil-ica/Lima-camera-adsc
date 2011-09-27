@@ -317,7 +317,7 @@ void BufferCtrlObj::reset()
 //-----------------------------------------------------
 int BufferCtrlObj::getLastAcquiredFrame()
 {
-	return m_reader->getLastAcquiredFrame();
+    return m_reader->getLastAcquiredFrame();
 }
 
 /*******************************************************************
@@ -352,6 +352,7 @@ bool SyncCtrlObj::checkTrigMode(TrigMode trig_mode)
 		break;
 		default :
 			valid_mode = false;
+		break;
 	}
 	return valid_mode;
 }
@@ -587,18 +588,27 @@ void Interface::getStatus(StatusType& status)
 	switch(adsc_status)
 	{
 		case Camera::Ready :
-			status.acq = AcqReady;
+		{
 			status.det = DetIdle;
+	        int nbHwFrames = 0;
+	        m_sync.getNbHwFrames(nbHwFrames);
+	        if(getNbHwAcquiredFrames() >= nbHwFrames)
+	            status.acq = AcqReady;
+	        else
+	            status.acq = AcqRunning;
+		}
 		break;
 		case Camera::Exposure :
 			status.det = DetExposure;
-			goto Running;
+			status.acq = AcqRunning;
+		break;
 		case Camera::Readout :
 			status.det = DetReadout;
-			goto Running;
+			status.acq = AcqRunning;
+		break;
 		case Camera::Latency :
 			status.det = DetLatency;
-			Running: status.acq = AcqRunning;
+			status.acq = AcqRunning;
 		break;
 	}
 	status.det_mask = DetExposure | DetReadout | DetLatency;
@@ -610,7 +620,8 @@ void Interface::getStatus(StatusType& status)
 int Interface::getNbHwAcquiredFrames()
 {
 	DEB_MEMBER_FUNCT();
-	return m_adsc.getNbAcquiredFrames();
+    int acq_frames = m_buffer.getLastAcquiredFrame()+1;
+    return acq_frames;
 }
 
 
