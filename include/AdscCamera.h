@@ -90,6 +90,10 @@ public:
 	void                setImagePath(const std::string& path);
 	const std::string&  getImagePath(void);
 
+	void enableDirectoryWatcher(void);
+	void disableDirectoryWatcher(void);
+	bool isDirectoryWatcherEnabled();
+
 private:
 	class AdscThread : public CmdThread
 	{
@@ -126,22 +130,23 @@ private:
 
 	void init();
 
-	AdscApi m_adsc_api;
+	AdscApi 		m_adsc_api;
+    mutable Cond    m_cond;
+	double		  	m_exp_time;
+	double		  	m_lat_time;
+	int		      	m_nb_frames;
+	int		      	m_flp_kind;
+	int		      	m_bin_used;
+	int		      	m_adc_used;
+	int		      	m_output_raws;
+	int		      	m_no_transform;
+	int		      	m_use_stored_dark;
+	int		      	m_last_image;
+    bool 			m_use_dw;
+	std::string		m_filename;
+	std::string		m_path;
 	
-	double		  m_exp_time;
-	double		  m_lat_time;
-	int		      m_nb_frames;
-	int		      m_flp_kind;
-	int		      m_bin_used;
-	int		      m_adc_used;
-	int		      m_output_raws;
-	int		      m_no_transform;
-	int		      m_use_stored_dark;
-	int		      m_last_image;
-	std::string	m_filename;
-	std::string	m_path;	
-	
-	AdscThread m_thread;
+	AdscThread 		m_thread;
 };
 
  std::ostream& operator <<(std::ostream& os, Camera& adsc);

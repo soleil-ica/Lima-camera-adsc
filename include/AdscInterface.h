@@ -122,6 +122,7 @@ public:
 	void reset();
 	int  getLastAcquiredFrame();
 	bool isTimeoutSignaled();
+	bool isRunning();
 
 private:
 	SoftBufferAllocMgr m_buffer_alloc_mgr;

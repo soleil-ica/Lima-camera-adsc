@@ -57,34 +57,39 @@ class Reader : public yat::Task
 public:
 
   Reader(Camera& cam, HwBufferCtrlObj& buffer_ctrl);
-  ~Reader();
+  virtual ~Reader();
 
   void start();
   void stop(bool immediatley = true);
   void reset();
   int  getLastAcquiredFrame(void);
   bool isTimeoutSignaled(void);
-
+bool isRunning(void);
   //- [yat::Task implementation]
 protected: 
   virtual void handle_message( yat::Message& msg )    throw (yat::Exception);
 
 private:
-  void addNewFrame(std::string filename);
+  void addNewFrame(std::string filename = "");
 
   //- Mutex
   yat::Mutex                  lock_;
   Camera&                     m_cam;
   HwBufferCtrlObj&            m_buffer;
+  bool						  m_use_dw;
   int                         m_image_number;
-  bool                        m_stop_already_done;
   int                         m_elapsed_seconds_from_stop;
   int                         m_time_out_watcher;
+  bool 						  m_stop_done;
+  bool 						  is_running;
   gdshare::DirectoryWatcher*  m_dw;//intended to monitor the arrival of files in a directory
   
   //Loading image stuff!
   Size                        m_image_size;
   DI::DiffractionImage*       m_DI;    
+
+  //simulate an image !
+  uint16_t*                   m_image;
 
 };
 } // namespace Adsc

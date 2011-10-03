@@ -328,6 +328,15 @@ bool BufferCtrlObj::isTimeoutSignaled()
     return m_reader->isTimeoutSignaled();
 }
 
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+bool BufferCtrlObj::isRunning()
+{
+    return m_reader->isRunning();
+}
+
 /*******************************************************************
  * \brief SyncCtrlObj constructor
  *******************************************************************/
@@ -462,8 +471,6 @@ BinCtrlObj::BinCtrlObj(Camera& adsc) :
 	DEB_CONSTRUCTOR();
 }
 
-//-----------------------------------------------------
-//
 //-----------------------------------------------------
 BinCtrlObj::~BinCtrlObj()
 {
@@ -604,8 +611,10 @@ void Interface::getStatus(StatusType& status)
 	            status.acq = AcqReady;
 	        else if(m_buffer.isTimeoutSignaled())
 	        	status.acq = AcqFault;
-	        else
+	        else if (m_buffer.isRunning())
 	            status.acq = AcqRunning;
+	        else
+	        	status.acq = AcqReady;
 		}
 		break;
 		case Camera::Exposure :
