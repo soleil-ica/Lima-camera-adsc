@@ -211,7 +211,7 @@ void	detcon_make_header_smv()
 		puthd("OSC_START",buf,made_header);
 	      }
 	  }
-	 else
+	 else		/* if axis = 0, omega setting rules.... */
 	  {
 	    if(dtc_wasset_kappa)
 	      {
@@ -225,8 +225,8 @@ void	detcon_make_header_smv()
 	      }
 	     else
 	      {
-		sprintf(buf,"%.3f",dtc_stat_phi);
-		puthd("PHI",buf,made_header);
+		sprintf(buf,"%.3f",dtc_stat_omega);
+		puthd("OMEGA",buf,made_header);
 		puthd("OSC_START",buf,made_header);
 	      }
 	  }

@@ -353,15 +353,17 @@ void Reader::addNewFrame(std::string filename)
 		int nb_frames = 0;
 		m_cam.getNbFrames(nb_frames);
 		// if nb acquired image < requested frames
-		if (continueAcq && (!nb_frames || m_image_number < nb_frames))
+		if (continueAcq && (!nb_frames || m_image_number < (nb_frames-1)))
 		{
 			yat::MutexLock scoped_lock(lock_);
 			{
+				DEB_TRACE() << "-- increase image_number";			
 				m_image_number++;
 			}
 		}
 		else
 		{
+			DEB_TRACE() << "-- stop monitoring immediatley";
 			stop();
 		}
 	}
