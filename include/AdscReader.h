@@ -13,12 +13,12 @@
 
 #define kPOST_MSG_TMO       2
 
-#define kTASK_PERIODIC_TIMEOUT_MS   1000
+#define kTASK_PERIODIC_TIMEOUT_MS    200
 const size_t  ADSC_START_MSG     =   (yat::FIRST_USER_MSG + 300);
 const size_t  ADSC_STOP_MSG      =   (yat::FIRST_USER_MSG + 301);
 const size_t  ADSC_RESET_MSG     =   (yat::FIRST_USER_MSG + 302);
 
-#define TIME_OUT_WATCHER    5
+#define TIME_OUT_WATCHER    20*kTASK_PERIODIC_TIMEOUT_MS
 ///////////////////////////////////////////////////////////
 
 

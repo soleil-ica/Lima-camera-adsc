@@ -18,6 +18,7 @@ Reader::Reader(Camera& cam, HwBufferCtrlObj& buffer_ctrl) :
 	try
 	{
 		m_use_dw = m_cam.isDirectoryWatcherEnabled();
+		m_DI=0;
 		m_image_number = 0;
 		m_time_out_watcher = 0;
 		enable_timeout_msg(false);
@@ -209,8 +210,8 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 						}
 						return;
 					}
-					m_elapsed_seconds_from_stop++;
-					DEB_TRACE() << "Elapsed seconds since stop() = " << m_elapsed_seconds_from_stop << " s";
+					m_elapsed_seconds_from_stop+=kTASK_PERIODIC_TIMEOUT_MS;
+					DEB_TRACE() << "Elapsed time since stop() = " << m_elapsed_seconds_from_stop << " ms";
 				}
 
 				bool continueAcq = false;
@@ -326,7 +327,12 @@ void Reader::addNewFrame(std::string filename)
 
 		if(filename.size()!=0)
 		{
-			DEB_TRACE() << "-- Read an image using DI";
+			DEB_TRACE() << "-- create DI object attached to image";
+			if(m_DI!=0)
+			{
+				delete m_DI;
+				m_DI=0;
+			}
 			m_DI = new DI::DiffractionImage(const_cast<char*>(filename.c_str()));
 
 			if(m_image_size.getWidth()!=m_DI->getWidth() || m_image_size.getHeight()!=m_DI->getHeight())
@@ -337,6 +343,9 @@ void Reader::addNewFrame(std::string filename)
 			{
 					((uint16_t*) ptr)[j] = (uint16_t)(m_DI->getImage()[j]);
 			}
+			DEB_TRACE() << "-- free DI object";
+			delete m_DI;
+			m_DI=0;
 		}
 		else
 		{
@@ -363,7 +372,7 @@ void Reader::addNewFrame(std::string filename)
 		}
 		else
 		{
-			DEB_TRACE() << "-- stop monitoring immediatley";
+			DEB_TRACE() << "-- stop monitoring immediately";
 			stop();
 		}
 	}
