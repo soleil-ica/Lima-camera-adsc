@@ -60,7 +60,7 @@ public:
   virtual ~Reader();
 
   void start();
-  void stop(bool immediatley = true);
+  void stop(bool immediateley = true);
   void reset();
   int  getLastAcquiredFrame(void);
   bool isTimeoutSignaled(void);
@@ -78,10 +78,10 @@ private:
   HwBufferCtrlObj&            m_buffer;
   bool						  m_use_dw;
   int                         m_image_number;
-  int                         m_elapsed_seconds_from_stop;
+  int                         m_elapsed_ms_from_stop;
   int                         m_time_out_watcher;
   bool 						  m_stop_done;
-  bool 						  is_running;
+  bool 						  m_is_running;
   gdshare::DirectoryWatcher*  m_dw;//intended to monitor the arrival of files in a directory
   
   //Loading image stuff!

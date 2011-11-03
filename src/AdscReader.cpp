@@ -11,22 +11,26 @@
 //---------------------------
 //- Ctor
 //---------------------------
-Reader::Reader(Camera& cam, HwBufferCtrlObj& buffer_ctrl) :
-		m_cam(cam), m_buffer(buffer_ctrl), m_stop_done(true), m_dw(0), m_use_dw(true)
+Reader::Reader(Camera& cam, HwBufferCtrlObj& buffer_ctrl)
+		: m_cam(cam), m_buffer(buffer_ctrl)
 {
 	DEB_CONSTRUCTOR();
 	try
 	{
-		m_use_dw = m_cam.isDirectoryWatcherEnabled();
-		m_DI=0;
+		m_stop_done = true;
+		m_dw = 0;
+		m_use_dw = true;
+		m_DI = 0;
 		m_image_number = 0;
 		m_time_out_watcher = 0;
+		m_is_running = false;
+		m_use_dw = m_cam.isDirectoryWatcherEnabled();
 		enable_timeout_msg(false);
 		enable_periodic_msg(false);
 		set_periodic_msg_period(kTASK_PERIODIC_TIMEOUT_MS);
 		m_cam.getMaxImageSize(m_image_size);
-		m_image = new uint16_t[m_image_size.getWidth() * m_image_size.getHeight()];
-		memset((uint16_t*) m_image, 0, m_image_size.getWidth() * m_image_size.getHeight() * 2);
+		m_image = new uint16_t[m_image_size.getWidth() * m_image_size.getHeight()];memset
+		((uint16_t*) m_image, 0, m_image_size.getWidth() * m_image_size.getHeight() * 2);
 	}
 	catch (Exception &e)
 	{
@@ -78,7 +82,7 @@ void Reader::start()
 			m_dw = 0;
 		}
 
-		if(m_use_dw)
+		if (m_use_dw)
 			m_dw = new gdshare::DirectoryWatcher(m_cam.getImagePath());
 
 		this->post(new yat::Message(ADSC_START_MSG), kPOST_MSG_TMO);
@@ -149,16 +153,17 @@ bool Reader::isTimeoutSignaled()
 {
 	DEB_MEMBER_FUNCT();
 	yat::MutexLock scoped_lock(lock_);
-	return (m_elapsed_seconds_from_stop>=TIME_OUT_WATCHER)?true:false;
+	return (m_elapsed_ms_from_stop >= TIME_OUT_WATCHER) ? true : false;
 }
-
 
 //---------------------------
 //- Reader::isRunning()
 //---------------------------
 bool Reader::isRunning(void)
 {
-	return is_running;
+	DEB_MEMBER_FUNCT();
+	yat::MutexLock scoped_lock(lock_);
+	return m_is_running;
 }
 
 //---------------------------
@@ -177,25 +182,25 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 				DEB_TRACE() << "Reader::->TASK_INIT";
 			}
 			break;
-			//-----------------------------------------------------
+				//-----------------------------------------------------
 			case yat::TASK_EXIT:
 			{
 				DEB_TRACE() << "Reader::->TASK_EXIT";
 			}
 			break;
-			//-----------------------------------------------------
+				//-----------------------------------------------------
 			case yat::TASK_TIMEOUT:
 			{
 				DEB_TRACE() << "Reader::->TASK_TIMEOUT";
 			}
 			break;
-			//-----------------------------------------------------
+				//-----------------------------------------------------
 			case yat::TASK_PERIODIC:
 			{
 				DEB_TRACE() << "Reader::->TASK_PERIODIC";
 				if (m_stop_done)
 				{
-					if (m_elapsed_seconds_from_stop >= m_time_out_watcher) // TO
+					if (m_elapsed_ms_from_stop >= m_time_out_watcher) // TO
 					{
 						enable_periodic_msg(false);
 						if (m_dw != 0)
@@ -206,18 +211,17 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 
 						yat::MutexLock scoped_lock(lock_);
 						{
-							is_running = false;
+							m_is_running = false;
 						}
 						return;
 					}
-					m_elapsed_seconds_from_stop+=kTASK_PERIODIC_TIMEOUT_MS;
-					DEB_TRACE() << "Elapsed time since stop() = " << m_elapsed_seconds_from_stop << " ms";
+					m_elapsed_ms_from_stop += kTASK_PERIODIC_TIMEOUT_MS;
+					DEB_TRACE() << "Elapsed time since stop() = " << m_elapsed_ms_from_stop << " ms";
 				}
 
 				bool continueAcq = false;
 
-				StdBufferCbMgr& buffer_mgr = ((reinterpret_cast<BufferCtrlObj&>(m_buffer)).getBufferCbMgr());
-				if(m_use_dw)
+				if (m_use_dw)
 				{
 					if (m_dw)
 					{
@@ -232,7 +236,6 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 
 						for (int i = 0; i < vecNewAndChangedFiles.size(); i++)
 						{
-							DEB_TRACE() << "vecNewAndChangedFiles = " << vecNewAndChangedFiles.at(i)->FullName();
 							if (vecNewAndChangedFiles.at(i)->FileExists())
 							{
 								DEB_TRACE() << "file : " << vecNewAndChangedFiles.at(i)->FullName();
@@ -245,33 +248,33 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 				{
 					int nbFrames = 0;
 					m_cam.getNbFrames(nbFrames);
-					if(m_cam.getNbAcquiredFrames()>=nbFrames)
+					if (m_cam.getNbAcquiredFrames() >= nbFrames)
 					{
-						DEB_TRACE() << "Exposure SUCCEEDED received from camera !";//all images are acquired !
+						DEB_TRACE() << "Exposure SUCCEEDED received from camera !"; //all images are acquired !
 						for (int i = 0; i < nbFrames; i++)
 						{
-							DEB_TRACE() << "file : " << "SIMULATED("<<i<<")";
+							DEB_TRACE() << "file : " << "SIMULATED(" << i << ")";
 							addNewFrame();
 						}
 					}
 				}
 			}
 			break;
-			//-----------------------------------------------------
+				//-----------------------------------------------------
 			case ADSC_START_MSG:
 			{
 				DEB_TRACE() << "Reader::->ADSC_START_MSG";
 				yat::MutexLock scoped_lock(lock_);
 				{
-					is_running = true;
+					m_is_running = true;
 					m_image_number = 0;
+					m_elapsed_ms_from_stop = 0;
+					m_stop_done = false;
 				}
-				m_elapsed_seconds_from_stop = 0;
-				m_stop_done = false;
 				enable_periodic_msg(true);
 			}
 			break;
-			//-----------------------------------------------------
+				//-----------------------------------------------------
 			case ADSC_STOP_MSG:
 			{
 				DEB_TRACE() << "Reader::->ADSC_STOP_MSG";
@@ -280,20 +283,20 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 					m_time_out_watcher = 0;
 				else
 					m_time_out_watcher = TIME_OUT_WATCHER;
-				if (!m_stop_done)//reset the counter, only at first call of stop()
+				if (!m_stop_done) //reset the counter, only at first call of stop()
 				{
-					m_elapsed_seconds_from_stop = 0;
+					m_elapsed_ms_from_stop = 0;
 					m_stop_done = true;
 				}
 			}
 			break;
-			//-----------------------------------------------------
+				//-----------------------------------------------------
 			case ADSC_RESET_MSG:
 			{
 				DEB_TRACE() << "Reader::->ADSC_RESET_MSG";
 			}
 			break;
-			//-----------------------------------------------------
+				//-----------------------------------------------------
 		}
 	}
 	catch (yat::Exception& ex)
@@ -324,28 +327,27 @@ void Reader::addNewFrame(std::string filename)
 		DEB_TRACE() << "-- prepare image buffer";
 		void *ptr = buffer_mgr.getBufferPtr(buffer_nb, concat_frame_nb);
 
-
-		if(filename.size()!=0)
+		if (filename.size() != 0)
 		{
 			DEB_TRACE() << "-- create DI object attached to image";
-			if(m_DI!=0)
+			if (m_DI != 0)
 			{
 				delete m_DI;
-				m_DI=0;
+				m_DI = 0;
 			}
 			m_DI = new DI::DiffractionImage(const_cast<char*>(filename.c_str()));
 
-			if(m_image_size.getWidth()!=m_DI->getWidth() || m_image_size.getHeight()!=m_DI->getHeight())
+			if(	m_image_size.getWidth()!=m_DI->getWidth() || m_image_size.getHeight()!=m_DI->getHeight())
 				throw LIMA_HW_EXC(Error, "Image size in file is different from the expected image size of this detector !");
 
 			DEB_TRACE() << "-- copy image in buffer";
 			for (int j = 0; j < m_DI->getWidth() * m_DI->getHeight(); j++)
 			{
-					((uint16_t*) ptr)[j] = (uint16_t)(m_DI->getImage()[j]);
+				((uint16_t*) ptr)[j] = (uint16_t)(m_DI->getImage()[j]);
 			}
 			DEB_TRACE() << "-- free DI object";
 			delete m_DI;
-			m_DI=0;
+			m_DI = 0;
 		}
 		else
 		{
@@ -362,11 +364,11 @@ void Reader::addNewFrame(std::string filename)
 		int nb_frames = 0;
 		m_cam.getNbFrames(nb_frames);
 		// if nb acquired image < requested frames
-		if (continueAcq && (!nb_frames || m_image_number < (nb_frames-1)))
+		if (continueAcq && (!nb_frames || m_image_number < (nb_frames - 1)))
 		{
 			yat::MutexLock scoped_lock(lock_);
 			{
-				DEB_TRACE() << "-- increase image_number";			
+				DEB_TRACE() << "-- increase image_number";
 				m_image_number++;
 			}
 		}
