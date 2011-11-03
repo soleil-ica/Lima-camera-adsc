@@ -9,7 +9,6 @@
 
     <groupId>fr.soleil.lib.Lima.Camera</groupId>
     <artifactId>LimaAdsc-${aol}-shared-${mode}</artifactId>
-
     <packaging>nar</packaging>
 
     <name>LimaAdsc</name>    <!-- use for the name of executable -->
