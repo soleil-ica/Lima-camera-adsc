@@ -11,7 +11,7 @@ The Lima module as been tested only with this the 315r model:
 
 Module configuration
 ````````````````````
-2 programs have to be running on the ADSC server: image_gather_xx and yyy
+2 programs have to be running on the ADSC server: ccd_image_gather and det_api_workstation
 
 Installation
 `````````````
