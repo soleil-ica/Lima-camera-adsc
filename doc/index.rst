@@ -7,7 +7,7 @@ Intoduction
 ```````````
 ADSC : Area Detector System Corporation
 
-The Lima module as been tested only with this the 315r model:
+The Lima module has been tested only with this the 315r model:
 
 Module configuration
 ````````````````````

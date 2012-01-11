@@ -13,12 +13,14 @@
 
 #define kPOST_MSG_TMO       2
 
-#define kTASK_PERIODIC_TIMEOUT_MS    200
+#define kTASK_PERIODIC_TIMEOUT_MS    	200 //200 ms
+#define TIME_SLEEP		        100 // 100 ms
+
 const size_t  ADSC_START_MSG     =   (yat::FIRST_USER_MSG + 300);
 const size_t  ADSC_STOP_MSG      =   (yat::FIRST_USER_MSG + 301);
 const size_t  ADSC_RESET_MSG     =   (yat::FIRST_USER_MSG + 302);
 
-#define TIME_OUT_WATCHER    20*kTASK_PERIODIC_TIMEOUT_MS
+
 ///////////////////////////////////////////////////////////
 
 
@@ -27,8 +29,6 @@ const size_t  ADSC_RESET_MSG     =   (yat::FIRST_USER_MSG + 302);
 
 #include "Debug.h"
 #include "Data.h"
-#include <base.h>
-#include <file.h>
 
 #include "HwMaxImageSizeCallback.h"
 #include "AdscCamera.h"
@@ -56,15 +56,30 @@ class Reader : public yat::Task
 
 public:
 
+  //ctor
   Reader(Camera& cam, HwBufferCtrlObj& buffer_ctrl);
+  //dtor
   virtual ~Reader();
 
+  //prepare reading image file
   void start();
-  void stop(bool immediateley = true);
+  //reading image file et pass it through lima framework using newFrameReady()
+  void stop();
+  //not implemented
   void reset();
+  //return image index, index starting at 0
   int  getLastAcquiredFrame(void);
+  //return true if reader can not read image file during a "Timeout"
   bool isTimeoutSignaled(void);
-bool isRunning(void);
+  //return true while reader is waiting and processing image file
+  bool isRunning(void);
+  //define max allowed Time before reading image file is done
+  void setTimeout(int TO);
+  //allow using diffraction image to open image file
+  void enableReader(void);
+  //use simulated image (all pixels sets to 0)
+  void disableReader(void);
+
   //- [yat::Task implementation]
 protected: 
   virtual void handle_message( yat::Message& msg )    throw (yat::Exception);
@@ -73,20 +88,18 @@ private:
   void addNewFrame(std::string filename = "");
 
   //- Mutex
-  yat::Mutex                  lock_;
+  yat::Mutex                  m_lock;
   Camera&                     m_cam;
   HwBufferCtrlObj&            m_buffer;
-  bool						  m_use_dw;
   int                         m_image_number;
-  int                         m_elapsed_ms_from_stop;
-  int                         m_time_out_watcher;
-  bool 						  m_stop_done;
-  bool 						  m_is_running;
-  gdshare::DirectoryWatcher*  m_dw;//intended to monitor the arrival of files in a directory
+  bool 						  m_is_stop_done;
+  bool						  m_is_running;
+  bool                        m_is_timeout_signaled;
+  bool 						  m_is_reader_open_image_file;
+  int						  m_timeout;
   
   //Loading image stuff!
   Size                        m_image_size;
-  DI::DiffractionImage*       m_DI;    
 
   //simulate an image !
   uint16_t*                   m_image;

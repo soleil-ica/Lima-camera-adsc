@@ -164,7 +164,7 @@ BufferCtrlObj::BufferCtrlObj(Camera& cam) :
 BufferCtrlObj::~BufferCtrlObj()
 {
 	DEB_DESTRUCTOR();
-	m_reader->stop(true);
+	m_reader->stop();
 	m_reader->exit();
 }
 
@@ -300,7 +300,7 @@ void BufferCtrlObj::start()
 void BufferCtrlObj::stop()
 {
 	DEB_MEMBER_FUNCT();
-	m_reader->stop(false);
+	m_reader->stop();
 }
 
 //-----------------------------------------------------
@@ -335,6 +335,33 @@ bool BufferCtrlObj::isTimeoutSignaled()
 bool BufferCtrlObj::isRunning()
 {
     return m_reader->isRunning();
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void BufferCtrlObj::setTimeout(int TO)
+{
+    DEB_MEMBER_FUNCT();
+    m_reader->setTimeout(TO);
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void BufferCtrlObj::enableReader(void)
+{
+    DEB_MEMBER_FUNCT();
+	m_reader->enableReader();
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void BufferCtrlObj::disableReader(void)
+{
+    DEB_MEMBER_FUNCT();
+	m_reader->disableReader();
 }
 
 /*******************************************************************
@@ -743,4 +770,29 @@ void Interface::setHeaderParameters(const std::string& header)
 	m_adsc.setHeaderParameters(header);
 }
 
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Interface::setTimeout(int TO)
+{
+    DEB_MEMBER_FUNCT();
+    m_buffer.setTimeout(TO);
+}
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Interface::enableReader(void)
+{
+	m_buffer.enableReader();
+}
+
+//-----------------------------------------------------
+//
+//-----------------------------------------------------
+void Interface::disableReader(void)
+{
+	m_buffer.disableReader();
+}
+//-----------------------------------------------------
+//
 //-----------------------------------------------------

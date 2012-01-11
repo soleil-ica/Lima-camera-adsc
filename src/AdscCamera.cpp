@@ -499,33 +499,5 @@ int Camera::getNbAcquiredFrames()
 	DEB_MEMBER_FUNCT();
 	return m_thread.getNbAcquiredFrames();
 }
-//-----------------------------------------------------
-//
-//-----------------------------------------------------
-bool Camera::isDirectoryWatcherEnabled()
-{
-    DEB_MEMBER_FUNCT();
-    AutoMutex aLock(m_cond.mutex());
-    return m_use_dw;
-}
 
-//-----------------------------------------------------
-//
-//-----------------------------------------------------
-void Camera::enableDirectoryWatcher()
-{
-    DEB_MEMBER_FUNCT();
-    AutoMutex aLock(m_cond.mutex());
-    m_use_dw = true;
-}
-
-//-----------------------------------------------------
-//
-//-----------------------------------------------------
-void Camera::disableDirectoryWatcher()
-{
-    DEB_MEMBER_FUNCT();
-    AutoMutex aLock(m_cond.mutex());
-    m_use_dw = false;
-}
 //-----------------------------------------------------

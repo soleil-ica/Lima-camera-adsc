@@ -90,10 +90,6 @@ public:
 	void                setImagePath(const std::string& path);
 	const std::string&  getImagePath(void);
 
-	void enableDirectoryWatcher(void);
-	void disableDirectoryWatcher(void);
-	bool isDirectoryWatcherEnabled();
-
 private:
 	class AdscThread : public CmdThread
 	{

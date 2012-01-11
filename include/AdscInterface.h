@@ -55,8 +55,8 @@ public:
 	virtual void setCurrImageType(ImageType curr_image_type);
 
 	virtual void getPixelSize(double& pixel_size);
-	virtual void getDetectorType(std::string& det_type);
-	virtual void getDetectorModel(std::string& det_model);
+	virtual void getDetectorType(string& det_type);
+	virtual void getDetectorModel(string& det_model);
 
 	virtual void registerMaxImageSizeCallback(HwMaxImageSizeCallback& cb);
 	virtual void unregisterMaxImageSizeCallback(HwMaxImageSizeCallback& cb);
@@ -116,14 +116,16 @@ public:
 	virtual void registerFrameCallback(HwFrameCallback& frame_cb);
 	virtual void unregisterFrameCallback(HwFrameCallback& frame_cb);
 
-	// Reader stuff
+	//Reader stuff
 	void start();
 	void stop();
 	void reset();
-	int  getLastAcquiredFrame();
-	bool isTimeoutSignaled();
-	bool isRunning();
-
+	int  getLastAcquiredFrame(void);
+	bool isTimeoutSignaled(void);
+	bool isRunning(void);
+	void setTimeout(int TO);
+	void enableReader(void);
+	void disableReader(void);
 private:
 	SoftBufferAllocMgr m_buffer_alloc_mgr;
 	StdBufferCbMgr m_buffer_cb_mgr;
@@ -200,26 +202,30 @@ public:
 	virtual void 	stopAcq();
 	virtual void 	getStatus(StatusType& status);
 	virtual int 	getNbHwAcquiredFrames();
-	void 			setHeaderParameters(const std::string& header);
-	
+	void 			setHeaderParameters(const string& header);
+
 	void			setStoredImageDark(bool value);
 	bool			getStoredImageDark(void);
 	void    		setImageKind(int image_kind);
 	int	    		getImageKind(void);	
 	void    		setLastImage(int last_image);
 	int	    		getLastImage(void);		
-	
-	void 				setFileName(const std::string& name);
-	const std::string& 	getFileName(void);
-	void 				setImagePath(const std::string& path);
-	const std::string& 	getImagePath(void);	
+
+	void 			setFileName(const string& name);
+	const string& 	getFileName(void);
+	void 			setImagePath(const string& path);
+	const string& 	getImagePath(void);
+	void 			setTimeout(int TO);
+	void 			enableReader(void);
+	void 			disableReader(void);
+
 private:
-	Camera& 			m_adsc;
-	CapList 			m_cap_list;
-	DetInfoCtrlObj 		m_det_info;
-	BufferCtrlObj 		m_buffer;
-	SyncCtrlObj 		m_sync;
-	BinCtrlObj 			m_bin;
+	Camera& 		m_adsc;
+	CapList 		m_cap_list;
+	DetInfoCtrlObj 	m_det_info;
+	BufferCtrlObj 	m_buffer;
+	SyncCtrlObj 	m_sync;
+	BinCtrlObj 		m_bin;
 };
 
 } // namespace Adsc
