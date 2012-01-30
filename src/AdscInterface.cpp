@@ -95,10 +95,10 @@ void DetInfoCtrlObj::getCurrImageType(ImageType& curr_image_type)
 //-----------------------------------------------------
 //
 //-----------------------------------------------------
-void DetInfoCtrlObj::getPixelSize(double& pixel_size)
+void DetInfoCtrlObj::getPixelSize(double& x_size,double& y_size)
 {
 	DEB_MEMBER_FUNCT();
-	pixel_size = 0.1025880;
+	x_size = y_size = 0.1025880;
 }
 
 //-----------------------------------------------------
