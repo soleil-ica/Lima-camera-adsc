@@ -21,8 +21,8 @@ Reader::Reader(Camera& cam, HwBufferCtrlObj& buffer_ctrl)
 		m_is_reset = false;
 		m_is_reader_open_image_file = true;
 		m_is_running = false;
-		m_image_number = 0;
 		m_is_timeout_signaled = false;
+		m_image_number = 0;
 		enable_timeout_msg(false);
 		enable_periodic_msg(false);
 		set_periodic_msg_period(TASK_PERIODIC_MS);
@@ -151,7 +151,7 @@ bool Reader::isTimeoutSignaled()
 {
 	DEB_MEMBER_FUNCT();
 	yat::MutexLock scoped_lock(m_lock);
-	return (m_timeout.expired());
+	return 	m_is_timeout_signaled;
 }
 
 
@@ -181,9 +181,9 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 				DEB_TRACE() << "Reader::->TASK_INIT";
 
 				//- set timeout unit in seconds
-				m_timeout.set_unit(yat::Timeout::TMO_UNIT_SEC);
+				m_timeout.set_unit(yat::Timeout::TMO_UNIT_MSEC);
 				//- set default timeout value
-				m_timeout.set_value(DEFAULT_READER_TIMEOUT_SEC);
+				m_timeout.set_value(DEFAULT_READER_TIMEOUT_MSEC);
 
 				//- create empty image initialized to 0 , in order to manage simulated image if necessary
 				try
@@ -223,6 +223,7 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 					if ( m_is_reset || m_timeout.expired() )
 					{
 						DEB_TRACE() << "FATAL::Failed to load image : timeout expired !";
+						m_is_timeout_signaled = true;
 						//- disable periodic msg
 						enable_periodic_msg(false);
 						//- disable timeout
@@ -251,6 +252,7 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 				}
 				else
 				{
+					enable_periodic_msg(false);	//no need to read file , so stop
 					//- simulated file , continue with addNewFrame()
 					m_full_file_name = "SIMULATED_IMAGE_FILE.XXX";
 				}
@@ -278,6 +280,7 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 					m_image_number = 0;
 					m_is_running = true;
 					m_is_reset = false;
+					m_is_timeout_signaled = false;
 					//- re-arm timeout
 					m_timeout.restart();
 				}
@@ -296,6 +299,7 @@ void Reader::handle_message(yat::Message& msg) throw (yat::Exception)
 				enable_periodic_msg(false);
 				yat::MutexLock scoped_lock(m_lock);
 				{
+					m_is_timeout_signaled = false;
 					m_is_reset = true;
 				}
 			}

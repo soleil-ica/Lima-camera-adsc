@@ -12,7 +12,7 @@
 const size_t  TASK_PERIODIC_MS = 100;
 const size_t  POST_MSG_TMO     = 2;
 
-const double  DEFAULT_READER_TIMEOUT_SEC = 10.;
+const double  DEFAULT_READER_TIMEOUT_MSEC = 1000.;
 
 const size_t  READER_START_MSG     =   (yat::FIRST_USER_MSG + 300);
 const size_t  READER_STOP_MSG      =   (yat::FIRST_USER_MSG + 301);
@@ -94,8 +94,8 @@ private:
   Size                        m_image_size;
   int						  m_periodic_time;
   int                         m_image_number;
+	bool 		m_is_timeout_signaled;
   bool						  m_is_running;
-  bool                        m_is_timeout_signaled;
   bool 						  m_is_reader_open_image_file;
   bool 						  m_is_reset;
   std::string 				  m_full_file_name;
