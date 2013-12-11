@@ -202,6 +202,11 @@ public:
 	virtual void 	stopAcq();
 	virtual void 	getStatus(StatusType& status);
 	virtual int 	getNbHwAcquiredFrames();
+
+    //! get the camera object to access it directly from client
+    Camera& getCamera()
+        {return m_adsc;}
+
     //! Set the header parameters
 	void 			setHeaderParameters(const string& header);
     //! Say to ADSC to store or not an image dark
