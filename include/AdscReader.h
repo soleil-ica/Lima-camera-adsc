@@ -3,7 +3,7 @@
 
 
 ///////////////////////////////////////////////////////////
-// YAT::TASK 
+// YAT::TASK
 ///////////////////////////////////////////////////////////
 #include <yat/threading/Task.h>
 #include <DiffractionImage.h>			//- to read back img data
@@ -27,15 +27,7 @@ const size_t  READER_RESET_MSG     =   (yat::FIRST_USER_MSG + 302);
 #include "Debug.h"
 #include "Data.h"
 
-#include "HwMaxImageSizeCallback.h"
 #include "AdscCamera.h"
-#include "HwBufferCtrlObj.h"
-
-
-using namespace lima;
-using namespace lima::Adsc;
-using namespace std;
-
 
 namespace lima
 {
@@ -78,7 +70,7 @@ public:
   void disableReader(void);
 
   //- [yat::Task implementation]
-protected: 
+protected:
   virtual void 	handle_message( yat::Message& msg )    throw (yat::Exception);
 
 private:
@@ -94,7 +86,7 @@ private:
   Size                        m_image_size;
   int						  m_periodic_time;
   int                         m_image_number;
-	bool 		m_is_timeout_signaled;
+  bool                        m_is_timeout_signaled;
   bool						  m_is_running;
   bool 						  m_is_reader_open_image_file;
   bool 						  m_is_reset;
