@@ -25,7 +25,6 @@
 #include <unistd.h>
 #include <cmath>
 
-using namespace lima;
 using namespace lima::Adsc;
 
 //-----------------------------------------------------

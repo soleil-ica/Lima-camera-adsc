@@ -6,7 +6,10 @@
 #include "Debug.h"
 #include "Data.h"
 #include "AdscReader.h"
-#include "AdscInterface.h"
+#include "AdscBufferCtrlObj.h"
+
+
+using namespace lima::Adsc;
 
 //---------------------------
 //- Ctor
