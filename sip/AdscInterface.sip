@@ -27,7 +27,7 @@ class AdscDetInfoCtrlObj : HwDetInfoCtrlObj
 %End
 
  public:
-	AdscDetInfoCtrlObj(AdscCamera& adsc);
+	AdscDetInfoCtrlObj(AdscCamera& adsc /KeepReference/);
 	virtual ~AdscDetInfoCtrlObj();
 
 	virtual void getMaxImageSize(Size& max_image_size /Out/);
