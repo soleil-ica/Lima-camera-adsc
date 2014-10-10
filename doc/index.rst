@@ -1,5 +1,7 @@
-Adsc
--------
+.. _camera-adsc:
+
+Adsc camera plugin
+-------------------
 
 .. image:: adsc.jpg
 
