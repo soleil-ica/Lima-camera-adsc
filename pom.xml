@@ -14,6 +14,12 @@
     <packaging>nar</packaging>
     <name>LimaAdsc</name>
     <description>This module controls the Adsc Camera</description>
+    
+    <scm>
+       <connection>scm:git:git://github.com/soleil-ica/Lima-camera-adsc.git</connection>
+       <developerConnection>scm:git:git://github.com/soleil-ica/Lima-camera-adsc.git</developerConnection>
+       <url>https://github.com/soleil-ica/Lima-camera-adsc</url>
+    </scm>
 	
 	<dependencies>
 		<dependency>
