@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 #include <math.h>
-#include "Debug.h"
-#include "Data.h"
+#include "lima/Debug.h"
+#include "processlib/Data.h"
 #include "AdscReader.h"
 #include "AdscInterface.h"
 

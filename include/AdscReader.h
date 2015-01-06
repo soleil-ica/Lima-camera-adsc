@@ -24,12 +24,12 @@ const size_t  READER_RESET_MSG     =   (yat::FIRST_USER_MSG + 302);
 #include <stdlib.h>
 #include <limits>
 
-#include "Debug.h"
-#include "Data.h"
+#include "lima/Debug.h"
+#include "processlib/Data.h"
 
-#include "HwMaxImageSizeCallback.h"
+#include "lima/HwMaxImageSizeCallback.h"
 #include "AdscCamera.h"
-#include "HwBufferCtrlObj.h"
+#include "lima/HwBufferCtrlObj.h"
 
 
 using namespace lima;

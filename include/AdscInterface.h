@@ -23,7 +23,7 @@
 #define ADSCINTERFACE_H
 
 #include "AdscCompatibility.h"
-#include "HwInterface.h"
+#include "lima/HwInterface.h"
 #include "AdscCamera.h"
 #include "AdscReader.h"
 
