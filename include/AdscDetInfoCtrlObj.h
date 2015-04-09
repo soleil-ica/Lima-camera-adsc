@@ -1,9 +1,9 @@
 #ifndef ADSCDETINFOCTRLOBJ_H
 #define ADSCDETINFOCTRLOBJ_H
 
-#include "Debug.h"
+#include "lima/Debug.h"
 #include "AdscCompatibility.h"
-#include "HwDetInfoCtrlObj.h"
+#include "lima/HwDetInfoCtrlObj.h"
 #include "AdscCamera.h"
 
 

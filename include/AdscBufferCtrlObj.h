@@ -1,10 +1,10 @@
 #ifndef ADSCBUFFERCTRLOBJ_H
 #define ADSCBUFFERCTRLOBJ_H
 
-#include "Debug.h"
+#include "lima/Debug.h"
 #include "AdscCompatibility.h"
-#include "HwBufferCtrlObj.h"
-#include "HwBufferMgr.h"
+#include "lima/HwBufferCtrlObj.h"
+#include "lima/HwBufferMgr.h"
 //#include "AdscCamera.h"
 //#include "AdscReader.h"
 

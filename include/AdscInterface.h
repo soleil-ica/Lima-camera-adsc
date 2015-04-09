@@ -22,9 +22,8 @@
 #ifndef ADSCINTERFACE_H
 #define ADSCINTERFACE_H
 
-#include "Debug.h"
+#include "lima/Debug.h"
 #include "AdscCompatibility.h"
-#include "HwInterface.h"
 #include "lima/HwInterface.h"
 #include "AdscDetInfoCtrlObj.h"
 #include "AdscBufferCtrlObj.h"

@@ -1,10 +1,10 @@
 #ifndef ADSCSYNCHCTRLOBJ_H
 #define ADSCSYNCHCTRLOBJ_H
 
-#include "Debug.h"
+#include "lima/Debug.h"
 #include "AdscCompatibility.h"
-#include "HwSyncCtrlObj.h"
-#include "HwInterface.h"
+#include "lima/HwSyncCtrlObj.h"
+#include "lima/HwInterface.h"
 #include "AdscCamera.h"
 
 namespace lima {

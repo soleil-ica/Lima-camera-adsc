@@ -1,9 +1,9 @@
 #ifndef ADSCBINCTRLOBJ_H
 #define ADSCBINCTRLOBJ_H
 
-#include "Debug.h"
+#include "lima/Debug.h"
 #include "AdscCompatibility.h"
-#include "HwBinCtrlObj.h"
+#include "lima/HwBinCtrlObj.h"
 #include "AdscCamera.h"
 
 
