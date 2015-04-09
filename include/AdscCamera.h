@@ -22,11 +22,11 @@
 #ifndef ADSCCAMERA_H
 #define ADSCCAMERA_H
 
-#include "HwBufferMgr.h"
+#include "lima/HwBufferMgr.h"
 #include "AdscApi.h"
-#include "ThreadUtils.h"
-#include "SizeUtils.h"
-#include "Debug.h"
+#include "lima/ThreadUtils.h"
+#include "lima/SizeUtils.h"
+#include "lima/Debug.h"
 
 #include "DetconFcns.h"
 #include "DetconPar.h"

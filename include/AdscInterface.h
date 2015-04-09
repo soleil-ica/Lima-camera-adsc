@@ -25,7 +25,7 @@
 #include "Debug.h"
 #include "AdscCompatibility.h"
 #include "HwInterface.h"
-#include "HwBufferMgr.h"
+#include "lima/HwInterface.h"
 #include "AdscDetInfoCtrlObj.h"
 #include "AdscBufferCtrlObj.h"
 #include "AdscSyncCtrlObj.h"

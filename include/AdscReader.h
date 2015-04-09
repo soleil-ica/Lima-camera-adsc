@@ -24,8 +24,8 @@ const size_t  READER_RESET_MSG     =   (yat::FIRST_USER_MSG + 302);
 #include <stdlib.h>
 #include <limits>
 
-#include "Debug.h"
-#include "Data.h"
+#include "lima/Debug.h"
+#include "processlib/Data.h"
 
 #include "AdscCamera.h"
 

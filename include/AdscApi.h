@@ -24,8 +24,8 @@
 
 #include <vector>
 #include "AdscCompatibility.h"
-#include "SizeUtils.h"
-#include "Exceptions.h"
+#include "lima/SizeUtils.h"
+#include "lima/Exceptions.h"
 
 namespace lima
 {
