@@ -19,16 +19,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //###########################################################################
-
-class AdscDetInfoCtrlObj : HwDetInfoCtrlObj
+namespace Adsc
+{
+class DetInfoCtrlObj : HwDetInfoCtrlObj
 {
 %TypeHeaderCode
 #include "AdscInterface.h"
 %End
 
  public:
-	AdscDetInfoCtrlObj(AdscCamera& adsc /KeepReference/);
-	virtual ~AdscDetInfoCtrlObj();
+	DetInfoCtrlObj(Adsc::Camera& adsc /KeepReference/);
+	virtual ~DetInfoCtrlObj();
 
 	virtual void getMaxImageSize(Size& max_image_size /Out/);
 	virtual void getDetectorImageSize(Size& det_image_size /Out/);
@@ -47,15 +48,15 @@ class AdscDetInfoCtrlObj : HwDetInfoCtrlObj
 					HwMaxImageSizeCallback& cb);
 };
 
-class AdscSyncCtrlObj : HwSyncCtrlObj
+class SyncCtrlObj : HwSyncCtrlObj
 {
 %TypeHeaderCode
 #include "AdscInterface.h"
 %End
 
  public:
-	AdscSyncCtrlObj(AdscCamera& adsc);
-	virtual ~AdscSyncCtrlObj();
+	SyncCtrlObj(Adsc::Camera& adsc);
+	virtual ~SyncCtrlObj();
 
 	virtual bool checkTrigMode(TrigMode trig_mode);
 	virtual void setTrigMode(TrigMode  trig_mode);
@@ -76,15 +77,15 @@ class AdscSyncCtrlObj : HwSyncCtrlObj
 };
 
 
-class AdscBinCtrlObj : HwBinCtrlObj
+class BinCtrlObj : HwBinCtrlObj
 {
 %TypeHeaderCode
 #include "AdscInterface.h"
 %End
 
  public:
-	AdscBinCtrlObj(AdscCamera& adsc);
-	virtual ~AdscBinCtrlObj();
+	BinCtrlObj(Adsc::Camera& adsc);
+	virtual ~BinCtrlObj();
 
 	virtual void setBin(const Bin& bin);
 	virtual void getBin(Bin& bin /Out/);
@@ -93,15 +94,15 @@ class AdscBinCtrlObj : HwBinCtrlObj
 };
 
 
-class AdscHwInterface : HwInterface
+class Interface : HwInterface
 {
 %TypeHeaderCode
 #include "AdscInterface.h"
 %End
 
  public:
-	AdscHwInterface(AdscCamera& adsc);
-	virtual ~AdscHwInterface();
+	Interface(Adsc::Camera& adsc);
+	virtual ~Interface();
 
 //	virtual const CapList& getCapList() const;
 	virtual void getCapList(std::vector<HwCap> &cap_list /Out/) const;
@@ -113,4 +114,5 @@ class AdscHwInterface : HwInterface
 	virtual void getStatus(HwInterface::StatusType& status /Out/);
 	virtual int getNbHwAcquiredFrames();
 
+};
 };
