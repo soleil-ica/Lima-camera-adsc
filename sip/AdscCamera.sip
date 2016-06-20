@@ -20,7 +20,9 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //###########################################################################
 
-class AdscCamera
+namespace Adsc
+{
+class Camera
 {
 %TypeHeaderCode
 #include "AdscCamera.h"
@@ -34,11 +36,9 @@ class AdscCamera
 		Ready, Exposure, Readout, Latency,
 	};
 
-	AdscCamera();
-	~AdscCamera();
+	Camera();
+	~Camera();
 
-	HwBufferCtrlObj* getBufferMgr();
-	
 	void startAcq();
 	void stopAcq();
 
@@ -66,7 +66,7 @@ class AdscCamera
 	void reset();
 	void setImageKind(int image_kind);
 	void setLastImage(int last_image);
-	void setFilename(std::string filename);
+	void setFileName(const std::string& filename);
 
 	const char* __repr__();
 %MethodCode
@@ -76,4 +76,4 @@ class AdscCamera
 	sipRes = tmpString.c_str();
 %End
 };
-
+};
