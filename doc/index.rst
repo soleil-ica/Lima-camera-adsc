@@ -1,12 +1,12 @@
 .. _camera-adsc:
 
-Adsc camera plugin
--------------------
+Adsc camera
+-----------
 
 .. image:: adsc.jpg
 
 Introduction
-```````````
+````````````
 ADSC : Area Detector System Corporation
 
 The Lima module has been tested only with the 315r model:
@@ -54,7 +54,6 @@ Optional capabilites
 * HwBin
 	- 1 * 1
 	- 2 * 2
-
 	
 Configuration
 ``````````````
@@ -70,9 +69,9 @@ here is the list of accessible fonctions to configure and use the ADSC detector:
 	void	setStoredImageDark(bool value);
 	bool	getStoredImageDark(void);
 	void    setImageKind(int image_kind);
-	int	    getImageKind(void);	
+	int     getImageKind(void);	
 	void    setLastImage(int last_image);
-	int	    getLastImage(void);	
+	int     getLastImage(void);	
 
 	void                setFileName(const std::string& name);
 	const std::string&  getFileName(void);
